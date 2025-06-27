@@ -1,5 +1,5 @@
 import React from "react";
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Card, CardBody, Col, Container, Row } from "reactstrap";
 
@@ -11,11 +11,9 @@ const EmailVerification = () => {
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-sm-5">
-        <MetaTags>
-          <title>
-            Email Verification | MyArchery
-          </title>
-        </MetaTags>
+        <Helmet>
+          <title>Email Verification | MyArchery.id</title>
+        </Helmet>
         <Container>
           <Row>
             <Col lg={12}>

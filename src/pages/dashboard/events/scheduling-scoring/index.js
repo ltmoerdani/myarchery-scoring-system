@@ -3,7 +3,7 @@ import { useParams, useLocation, useHistory } from "react-router-dom";
 import queryString from "query-string";
 import { useWizardView } from "utils/hooks/wizard-view";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container } from "reactstrap";
 import { WizardView, WizardViewContent } from "components/ma";
 import { StepsList, StepItem } from "./components";
@@ -36,9 +36,9 @@ const PageEventDetailSchedulingScoring = () => {
 
   return (
     <React.Fragment>
-      <MetaTags>
+      <Helmet>
         <title>Atur Jadwal dan Skor Pertandingan | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <StyledPageWrapper>
         <Container fluid>

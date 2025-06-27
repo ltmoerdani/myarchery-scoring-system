@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Card, CardBody, Row, Col, Button } from "reactstrap";
 import { DateInput, TimeInput, SelectInput } from "components";
-import { Bracket, Seed, SeedItem, SeedTeam, SeedTime } from "react-brackets";
+import { Bracket, Seed, SeedItem, SeedTime, SeedTeam } from "@sportsgram/brackets";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import {
@@ -162,7 +162,8 @@ function Eliminasi() {
   const [loading, setLoading] = React.useState(false);
 
   const [eliminasiSchedule, setEliminasiSchedule] = useState([]);
-  const [matches, setMatches] = useState([]);
+  const [matches, setMatches] = useState({ rounds: [] });
+  const [bracketData, setBracketData] = useState(null);
   const [eventDetail, setEventDetail] = useState({});
   const [date, setDate] = useState("");
   const [start, setStart] = useState("");
@@ -203,6 +204,12 @@ function Eliminasi() {
     }
     getEventEliminationTemplate();
   }, [category, countEliminationMember, type, gender]);
+
+  useEffect(() => {
+    if (matches.rounds.length > 0) {
+      setBracketData(transformBracketData(matches.rounds));
+    }
+  }, [matches]);
 
   useEffect(() => {
     if (bracketData) {
@@ -382,12 +389,28 @@ function Eliminasi() {
     getEventEliminationTemplate();
   };
 
+  // Transform data structure for react-tournament-board
+  const transformBracketData = (rounds) => {
+    if (!rounds || !rounds.length) return [];
+    
+    return rounds.map((round, roundIndex) => {
+      return round.seeds.map((seed) => ({
+        id: seed.id || `team-${seed.teams[0]?.name}-${seed.teams[1]?.name}`,
+        teams: seed.teams.map(team => ({
+          id: team.id || team.name,
+          name: team.name || "-",
+          isWinner: team.win === 1
+        }))
+      }));
+    });
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
-        <MetaTags>
+        <Helmet>
           <title>Dashboard | Setting - Eliminasi</title>
-        </MetaTags>
+        </Helmet>
         <Container fluid>
           <div>
             <Link to="/dashboard/events">
@@ -491,17 +514,13 @@ function Eliminasi() {
 
                     <BaganView>
                       <Bracket
-                        rounds={
-                          matches.rounds != undefined ? matches.rounds : []
-                        }
-                        renderSeedComponent={(e) => {
-                          return CustomSeed(
-                            e,
-                            setScoring,
-                            matches.updated,
-                            matches.rounds.length
-                          );
-                        }}
+                        competitor={transformBracketData(matches.rounds)}
+                        nodeRenderer={(props) => (
+                          <div className={props.isWinner ? "winner" : ""}>
+                            {props.competitor.name}
+                          </div>
+                        )}
+                        direction="horizontal"
                       />
 
                       {isModalScoringOpen &&

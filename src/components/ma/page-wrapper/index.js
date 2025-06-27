@@ -1,129 +1,30 @@
-import * as React from "react";
-import styled from "styled-components";
-
-import MetaTags from "react-meta-tags";
-import { Container } from "reactstrap";
-import { ProcessingToast } from "components/ma/processing-toast";
-import { ErrorBoundary } from "components/ma/error-boundary";
+import React from "react";
+import PropTypes from "prop-types";
+import { Helmet } from "react-helmet-async";
 import { Breadcrumb } from "./components/breadcrumb";
 
-function PageWrapper({
-  children,
-  pageTitle,
-  unconstrained = false,
-  navbar,
-  sidebar,
-  breadcrumbText,
-  breadcrumbLink,
-  before,
-  after,
-}) {
-  const commonLayoutProps = {
-    breadcrumbText: breadcrumbText,
-    breadcrumbLink: breadcrumbLink,
-    unconstrained: unconstrained,
-  };
+function PageWrapper({ pageTitle, breadcrumb, children, className }) {
   return (
-    <React.Fragment>
-      <MetaTags>
-        {pageTitle ? <title>{pageTitle} | MyArchery.id</title> : <title>MyArchery.id</title>}
-      </MetaTags>
+    <div className={className}>
+      <Helmet>
+        <title>{pageTitle} | MyArchery.id</title>
+      </Helmet>
 
-      {before}
-      {navbar ? (
-        <LayoutNavbar {...commonLayoutProps} navbar={navbar}>
+      <div className="page-content">
+        <div className="container-fluid">
+          <Breadcrumb title={pageTitle} breadcrumbItem={breadcrumb} />
           {children}
-        </LayoutNavbar>
-      ) : sidebar ? (
-        <LayoutSidebar {...commonLayoutProps} sidebar={sidebar}>
-          {children}
-        </LayoutSidebar>
-      ) : (
-        <LayoutPlain {...commonLayoutProps}>{children}</LayoutPlain>
-      )}
-      {after}
-
-      <ProcessingToast />
-    </React.Fragment>
-  );
-}
-
-function LayoutPlain({ children, unconstrained = false, breadcrumbText, breadcrumbLink }) {
-  return (
-    <React.Fragment>
-      <Container fluid={unconstrained}>
-        <Breadcrumb label={breadcrumbText} to={breadcrumbLink} />
-      </Container>
-
-      <ContentLayoutWrapper>
-        <Container fluid={unconstrained}>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </Container>
-      </ContentLayoutWrapper>
-    </React.Fragment>
-  );
-}
-
-function LayoutNavbar({ navbar, ...propsLayoutPlain }) {
-  return (
-    <React.Fragment>
-      {navbar}
-      <LayoutPlain {...propsLayoutPlain} />
-    </React.Fragment>
-  );
-}
-
-function LayoutSidebar({
-  children,
-  sidebar,
-  unconstrained = false,
-  breadcrumbText,
-  breadcrumbLink,
-}) {
-  return (
-    <LayoutSidebarWrapper>
-      {sidebar}
-      <div>
-        <Container fluid={unconstrained}>
-          <Breadcrumb label={breadcrumbText} to={breadcrumbLink} />
-        </Container>
-
-        <MainContentWrapper>
-          <Container fluid={unconstrained}>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </Container>
-        </MainContentWrapper>
+        </div>
       </div>
-    </LayoutSidebarWrapper>
+    </div>
   );
 }
 
-/* =================================== */
-// styles
+PageWrapper.propTypes = {
+  pageTitle: PropTypes.string,
+  breadcrumb: PropTypes.string,
+  children: PropTypes.node,
+  className: PropTypes.string,
+};
 
-const ContentLayoutWrapper = styled.div`
-  font-family: "Inter", sans-serif;
-  margin: 2.5rem auto 5rem auto;
-`;
-
-const LayoutSidebarWrapper = styled.div`
-  font-family: "Inter", sans-serif;
-  display: flex;
-  height: 100%;
-
-  > *:nth-child(1) {
-    flex-shrink: 0;
-  }
-
-  > *:nth-child(2) {
-    flex-grow: 1;
-  }
-`;
-
-const MainContentWrapper = styled.div`
-  ${LayoutSidebarWrapper} & {
-    margin: 2.5rem auto 5rem auto;
-  }
-`;
-
-export { PageWrapper };
+export default PageWrapper;

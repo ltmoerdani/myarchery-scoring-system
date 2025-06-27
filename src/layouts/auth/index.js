@@ -1,15 +1,20 @@
-import PropTypes from 'prop-types';
 import React from "react";
 import { withRouter } from "react-router-dom";
-import "toastr/build/toastr.min.css";
+import PropTypes from "prop-types";
+import { Container } from "reactstrap";
 
-const NonAuthLayout = (props) => {
-  return <React.Fragment>{props.children}</React.Fragment>;
+function AuthLayout({ children }) {
+  return (
+    <div>
+      <Container fluid className="p-0">
+        {children}
+      </Container>
+    </div>
+  );
+}
+
+AuthLayout.propTypes = {
+  children: PropTypes.node,
 };
 
-NonAuthLayout.propTypes = {
-  children: PropTypes.any,
-  location: PropTypes.object,
-};
-
-export default withRouter(NonAuthLayout);
+export default withRouter(AuthLayout);

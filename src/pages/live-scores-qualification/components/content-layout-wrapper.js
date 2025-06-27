@@ -1,14 +1,14 @@
 import * as React from "react";
 import styled from "styled-components";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 
 function ContentLayoutWrapper({ children, pageTitle }) {
   return (
     <React.Fragment>
-      <MetaTags>
+      <Helmet>
         {pageTitle ? <title>{pageTitle} | MyArchery.id</title> : <title>MyArchery.id</title>}
-      </MetaTags>
+      </Helmet>
       <StyledPageWrapper>{children}</StyledPageWrapper>
     </React.Fragment>
   );

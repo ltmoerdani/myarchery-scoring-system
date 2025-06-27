@@ -1,91 +1,104 @@
 import React, { useMemo, useState } from "react";
-import { Card, CardBody } from "reactstrap";
-
-// Datatable related plugins
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
+import { Card, CardBody, Table } from "reactstrap";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 
 // Data for dummy
-import { dummyConstants } from '../../../../constants';
+import { dummyConstants } from "../../../../constants";
 
 // Import Breadcrumb
-import './sass/datatables.scss';
+import "./sass/datatables.scss";
 
 const TableCategory = React.memo(() => {
-  const [page, setPage] = useState(1);
-  const [sizePerPage, setSizePerPage] = useState(10);
-  const [productData] = useState(dummyConstants.category);
+  const [data] = useState(dummyConstants.category);
 
-  // Memoize columns definition to avoid unnecessary re-renders
-  const columns = useMemo(() => [
-    {
-      dataField: 'id',
-      text: 'Id',
-      sort: true,
-    },
-    {
-      dataField: 'class',
-      text: 'Kelas',
-      sort: true,
-    },
-    {
-      dataField: 'death_bird',
-      text: 'Batas Lahir',
-      sort: true,
-    },
-    {
-      dataField: 'arange',
-      text: 'Jarak',
-      sort: true,
-    },
-    {
-      dataField: 'kuota',
-      text: 'Kuota Terisi',
-      sort: true,
-    },
-    {
-      dataField: 'registrasi',
-      text: 'Biaya Registrasi',
-    },
-    {
-      dataField: 'status',
-      text: 'Status',
-      formatter: (cell, row) => {
-        return (
-          <div>
-            <span className={`${row.status ? "bg-danger" : "bg-success"} text-white rounded-3 px-2`}>{row.status ? "Full Booked" : "On Sale"}</span>
-          </div>
-        );
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "id",
+        header: "Id",
       },
-    }
-  ], []);
+      {
+        accessorKey: "class",
+        header: "Kelas",
+      },
+      {
+        accessorKey: "death_bird",
+        header: "Batas Lahir",
+      },
+      {
+        accessorKey: "arange",
+        header: "Jarak",
+      },
+      {
+        accessorKey: "kuota",
+        header: "Kuota Terisi",
+      },
+      {
+        accessorKey: "registrasi",
+        header: "Biaya Registrasi",
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => (
+          <div>
+            <span className={`${row.original.status ? "bg-danger" : "bg-success"} text-white rounded-3 px-2`}>
+              {row.original.status ? "Full Booked" : "On Sale"}
+            </span>
+          </div>
+        ),
+      },
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   return (
     <Card>
       <CardBody>
-        <ToolkitProvider
-          keyField="id"
-          data={productData}
-          columns={columns}
-          search
-        >
-          {toolkitProps => (
-            <div>
-              <BootstrapTable
-                {...toolkitProps.baseProps}
-                pagination={paginationFactory({
-                  page,
-                  sizePerPage,
-                  onPageChange: setPage,
-                  onSizePerPageChange: setSizePerPage
-                })}
-                wrapperClasses="table-responsive"
-              />
-            </div>
-          )}
-        </ToolkitProvider>
+        <div className="table-responsive">
+          <Table className="table-hover">
+            <thead>
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map(header => (
+                    <th key={header.id} {...{ onClick: header.column.getToggleSortingHandler() }}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted()] ?? null}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </CardBody>
     </Card>
   );

@@ -11,7 +11,7 @@ import IconDownload from "components/ma/icons/mono/download";
 import { PageWrapper } from "../components/dos-page-wrapper";
 import { PageHeader } from "../components/page-header";
 import { ToolbarFilter } from "../components/toolbar-filters";
-import { ButtonShowBracket } from "./components/button-show-bracket";
+import ButtonShowBracket from "./components/button-show-bracket";
 import { ScoringTable } from "./components/scoring-table";
 import { ScoringTableTeam } from "./components/scoring-table-team";
 import { useDownloadBaganElimination } from "pages/dashboard/events/scoring-elimination/hooks/download-bagan-elimination";

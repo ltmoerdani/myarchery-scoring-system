@@ -8,7 +8,7 @@ import {
   Seed as RBSeed,
   SeedItem as RBSeedItem,
   SeedTeam as RBSeedTeam,
-} from "react-brackets";
+} from "@charlieduong/react-tournament-bracket";
 import {
   ButtonOutlineBlue,
   LoadingScreen,
@@ -261,4 +261,4 @@ const BoxName = styled.span`
   text-overflow: ellipsis;
 `;
 
-export { ButtonShowBracket };
+export default ButtonShowBracket;

@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import * as AuthStore from "store/slice/authentication";
 
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container } from "reactstrap";
 import { SpinnerDotBlock } from "components/ma";
 import CardMenu from "../components/CardMenu";
@@ -103,13 +103,13 @@ function PageEventDetailHome() {
   // Rendering komponen utama
   return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         {eventDetail ? (
           <title>Dashboard | Event {eventDetail.publicInformation.eventName}</title>
         ) : (
           <title>Dashboard | Event</title>
         )}
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="mt-4 mb-5">
         {eventDetail ? (

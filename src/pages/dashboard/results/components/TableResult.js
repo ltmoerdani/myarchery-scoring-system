@@ -1,80 +1,95 @@
 import React, { useMemo, useState } from "react";
-import { Card, CardBody } from "reactstrap";
-
-// Datatable related plugins
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-import { Link } from 'react-router-dom';
+import { Card, CardBody, Table } from "reactstrap";
+import { Link } from "react-router-dom";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 
 // Data for dummy
-import { dummyConstants } from '../../../../constants';
+import { dummyConstants } from "../../../../constants";
 
-// Import Breadcrumb
-import './sass/datatables.scss';
+// Import style
+import "./sass/datatables.scss";
 
 const TableResult = React.memo(() => {
-  const [page, setPage] = useState(1);
-  const [sizePerPage, setSizePerPage] = useState(10);
-  const [productData] = useState(dummyConstants.result);
+  const [data] = useState(dummyConstants.result);
 
-  // Memoize columns definition to avoid unnecessary re-renders
-  const columns = useMemo(() => [
-    {
-      dataField: 'id',
-      text: 'Id',
-      sort: true,
-    },
-    {
-      dataField: 'name',
-      text: 'Name',
-      sort: true,
-    },
-    {
-      dataField: 'code',
-      text: 'Kode',
-      sort: true,
-    },
-    {
-      dataField: 'description',
-      text: 'Description',
-      sort: true,
-    },
-    {
-      dataField: 'action',
-      text: 'Action',
-      formatter: (cell, row) => (
-        <Link to={`/edit/${row.id}`} className="btn btn-primary btn-sm">
-          Edit
-        </Link>
-      ),
-    }
-  ], []);
+  const columns = useMemo(
+    () => [
+      {
+        accessorKey: "id",
+        header: "Id",
+      },
+      {
+        accessorKey: "name",
+        header: "Name",
+      },
+      {
+        accessorKey: "code",
+        header: "Kode",
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+      },
+      {
+        accessorKey: "action",
+        header: "Action",
+        cell: ({ row }) => (
+          <Link to={`/edit/${row.original.id}`} className="btn btn-primary btn-sm">
+            Edit
+          </Link>
+        ),
+      },
+    ],
+    []
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   return (
     <Card>
       <CardBody>
-        <ToolkitProvider
-          keyField="id"
-          data={productData}
-          columns={columns}
-          search
-        >
-          {toolkitProps => (
-            <div>
-              <BootstrapTable
-                {...toolkitProps.baseProps}
-                pagination={paginationFactory({
-                  page,
-                  sizePerPage,
-                  onPageChange: setPage,
-                  onSizePerPageChange: setSizePerPage
-                })}
-                wrapperClasses="table-responsive"
-              />
-            </div>
-          )}
-        </ToolkitProvider>
+        <div className="table-responsive">
+          <Table className="table-hover">
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} {...{ onClick: header.column.getToggleSortingHandler() }}>
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: " 🔼",
+                        desc: " 🔽",
+                      }[header.column.getIsSorted()] ?? null}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </CardBody>
     </Card>
   );

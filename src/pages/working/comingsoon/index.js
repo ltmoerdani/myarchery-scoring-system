@@ -1,7 +1,7 @@
 import React from "react";
 //Import Countdown
 import Countdown from "react-countdown";
-import MetaTags from 'react-meta-tags';
+import { Helmet } from 'react-helmet-async';
 import { Link } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 import maintanence from "../../../assets/images/coming-soon.svg";
@@ -35,9 +35,9 @@ const Comingsoon = () => {
 
   return (
     <React.Fragment>
-     <MetaTags>
+     <Helmet>
           <title>Coming Soon | MyArchery</title>
-        </MetaTags>
+        </Helmet>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-white">
           <i className="fas fa-home h2"/>

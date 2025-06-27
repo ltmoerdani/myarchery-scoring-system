@@ -1,25 +1,50 @@
-import { AvField, AvForm } from "availity-reactstrap-validation"
 import React from "react"
-import MetaTags from 'react-meta-tags'
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import {
   Card,
   CardBody,
   Col,
-  Container, Row
+  Container, Row,
+  Alert
 } from "reactstrap"
 import logo from "../../../assets/images/logo.svg"
 // import images
 import profile from "../../../assets/images/profile-img.png"
-
+import { Helmet } from "react-helmet-async"
+import { useFormik } from "formik"
+import * as Yup from "yup"
+import { AuthenticationService } from "services"
+import { toast } from "react-hot-toast"
 
 const RecoverPassword = () => {
+  const history = useHistory()
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Please enter your email"),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        await AuthenticationService.forgotPassword(values)
+        toast.success("Password reset instructions have been sent to your email")
+        history.push("/login")
+      } catch (error) {
+        toast.error(error.response?.data?.message || "Failed to send reset instructions")
+      } finally {
+        setSubmitting(false)
+      }
+    },
+  })
+
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Recover Password | MyArchery.id</title>
+      </Helmet>
       <div className="account-pages my-5 pt-sm-5">
-      <MetaTags>
-          <title>Recover Password | MyArchery</title>
-        </MetaTags>
         <Container>
           <Row className="justify-content-center">
             <Col md={8} lg={6} xl={5}>
@@ -43,7 +68,7 @@ const RecoverPassword = () => {
                 </div>
                 <CardBody className="pt-0">
                   <div>
-                    <Link to="dashboard">
+                    <Link to="/">
                       <div className="avatar-md profile-user-wid mb-4">
                         <span className="avatar-title rounded-circle bg-light">
                           <img
@@ -58,44 +83,63 @@ const RecoverPassword = () => {
                   </div>
 
                   <div className="p-2">
-                    <div
-                      className="alert alert-success text-center mb-4"
-                      role="alert"
-                    > Enter your Email and instructions will be sent to you! </div>
+                    <div className="text-center mb-4">
+                      <h5>Reset Password</h5>
+                      <p className="text-muted">
+                        Enter your email and we'll send you instructions to reset your password.
+                      </p>
+                    </div>
 
-                    <AvForm className="form-horizontal">
-                        <div className="mb-3">
-                          <AvField
-                            name="email"
-                            label="Email"
-                            className="form-control"
-                            placeholder="Enter email"
-                            type="email"
-                            required
-                          />
-                        </div>
-                        <div className="text-end">
-                        <button
-                          className="btn btn-primary w-md "
-                          type="submit"
-                        >
-                          Reset
-                            </button>
+                    <form onSubmit={formik.handleSubmit}>
+                      <div className="mb-3">
+                        <label htmlFor="email">Email</label>
+                        <input
+                          id="email"
+                          name="email"
+                          className="form-control"
+                          placeholder="Enter email"
+                          type="email"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.email}
+                        />
+                        {formik.touched.email && formik.errors.email ? (
+                          <Alert color="danger" className="mt-2">
+                            {formik.errors.email}
+                          </Alert>
+                        ) : null}
                       </div>
-                        </AvForm>
+
+                      <div className="mt-3 d-grid">
+                        <button
+                          className="btn btn-primary btn-block"
+                          type="submit"
+                          disabled={formik.isSubmitting}
+                        >
+                          {formik.isSubmitting ? "Sending..." : "Reset Password"}
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </CardBody>
               </Card>
               <div className="mt-5 text-center">
                 <p>
-                  Remember It ?{" "}
+                  Remember your password?{" "}
+                  <Link to="/login" className="fw-medium text-primary">
+                    Login
+                  </Link>
+                </p>
+                <p>
+                  © {new Date().getFullYear()} MyArchery. Crafted with{" "}
+                  Remember It ? {" "}
                   <Link
-                    to="pages-login"
+                    to="/login"
                     className="fw-medium text-primary"
                   >
                     {" "}
-                      Sign In here
-                    </Link>{" "}
+                    Sign In here
+                  </Link>{" "}
                 </p>
                 <p>
                   © {new Date().getFullYear()} MyArchery. Crafted with{" "}

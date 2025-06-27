@@ -10,7 +10,7 @@ import { stringUtil } from "utils";
 import CardClassificationList from "./components/card-classification-list";
 import TableClassification from "./components/table-classification";
 import {
-  fetchClassification,
+  useClassificationData,
   useClassificationFormData,
 } from "./hooks/form-classification";
 
@@ -30,7 +30,7 @@ const CreateNewClassification = ({ classification, userData }) => {
   const [selectRadio, setSelectRadio] = React.useState(
     selectConstants.classificationOption[0].value
   );
-  const { parentClassificationList } = fetchClassification(
+  const { parentClassificationList, childrenClassificationList } = useClassificationData(
     null,
     contentType,
     onRefreshData

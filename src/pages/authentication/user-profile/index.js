@@ -1,32 +1,34 @@
 // availity-reactstrap-validation
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import React, { useEffect, useState } from "react";
-import MetaTags from 'react-meta-tags';
+import { Helmet } from 'react-helmet-async';
 import {
   Alert, Button, Card, CardBody, Col, Container, Media, Row
 } from "reactstrap";
-import avatar from "../../../assets/images/users/avatar-man.png";
-import Breadcrumb from "../../components/Common/Breadcrumb";
+import avatar from "assets/images/users/avatar-man.png";
+import Breadcrumb from "components/Common/Breadcrumb";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const UserProfile = props => {
-  const [email, setemail] = useState("")
-  const [name, setname] = useState("")
-  const [idx, setidx] = useState(1)
+  const [email, setEmail] = useState("")
+  const [name, setName] = useState("")
+  const [idx, setIdx] = useState(1)
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"))
       if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        setname(obj.displayName)
-        setemail(obj.email)
-        setidx(obj.uid)
+        setName(obj.displayName)
+        setEmail(obj.email)
+        setIdx(obj.uid)
       } else if (
         process.env.REACT_APP_DEFAULTAUTH === "fake" ||
         process.env.REACT_APP_DEFAULTAUTH === "jwt"
       ) {
-        setname(obj.username)
-        setemail(obj.email)
-        setidx(obj.uid)
+        setName(obj.username)
+        setEmail(obj.email)
+        setIdx(obj.uid)
       }
       setTimeout(() => {
         props.resetProfileFlag();
@@ -34,16 +36,24 @@ const UserProfile = props => {
     }
   }, [props.success])
 
-  function handleValidSubmit(event, values) {
-    props.editProfile(values)
-  }
+  const formik = useFormik({
+    initialValues: {
+      username: name,
+    },
+    validationSchema: Yup.object({
+      username: Yup.string().required("Username is required"),
+    }),
+    onSubmit: (values) => {
+      props.editProfile({ ...values, idx });
+    },
+  });
 
   return (
     <React.Fragment>
       <div className="page-content">
-        <MetaTags>
+        <Helmet>
           <title>Profile | MyArchery</title>
-        </MetaTags>
+        </Helmet>
         <Container fluid>
           <Breadcrumb title="MyArchery" breadcrumbItems={[{title: "Profile"}]} />
 
@@ -58,55 +68,56 @@ const UserProfile = props => {
 
               <Card>
                 <CardBody>
-                  <Media>
-                    <div className="ms-3">
+                  <div className="d-flex align-items-center">
+                    <div className="me-3">
                       <img
                         src={avatar}
                         alt=""
                         className="avatar-md rounded-circle img-thumbnail"
                       />
                     </div>
-                    <Media body className="align-self-center">
-                      <div className="text-muted">
-                        <h5>{name}</h5>
-                        <p className="mb-1">{email}</p>
-                        <p className="mb-0">Id no: #{idx}</p>
-                      </div>
-                    </Media>
-                  </Media>
+                    <div>
+                      <h5 className="mb-1">{name}</h5>
+                      <p className="mb-1">{email}</p>
+                      <p className="mb-0 text-muted">Id no: #{idx}</p>
+                    </div>
+                  </div>
                 </CardBody>
               </Card>
             </Col>
           </Row>
 
-          <h4 className="card-title mb-4">Change User Name</h4>
+          <h4 className="card-title mb-4">Change Username</h4>
 
           <Card>
             <CardBody>
-              <AvForm
-                className="form-horizontal"
-                onValidSubmit={(e, v) => {
-                  handleValidSubmit(e, v)
-                }}
-              >
-                <div className="form-group">
-                  <AvField
+              <form onSubmit={formik.handleSubmit}>
+                <div className="mb-3">
+                  <label htmlFor="username" className="form-label">
+                    Username
+                  </label>
+                  <input
+                    id="username"
                     name="username"
-                    label="User Name"
-                    value={name}
-                    className="form-control"
-                    placeholder="Enter User Name"
                     type="text"
-                    required
+                    className="form-control"
+                    placeholder="Enter username"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.username}
                   />
-                  <AvField name="idx" value={idx} type="hidden" />
+                  {formik.touched.username && formik.errors.username ? (
+                    <Alert color="danger" className="mt-2">
+                      {formik.errors.username}
+                    </Alert>
+                  ) : null}
                 </div>
                 <div className="text-center mt-4">
                   <Button type="submit" color="danger">
-                    Edit User Name
+                    Update Username
                   </Button>
                 </div>
-              </AvForm>
+              </form>
             </CardBody>
           </Card>
         </Container>

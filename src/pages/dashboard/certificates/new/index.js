@@ -13,7 +13,7 @@ import { prepareSaveData } from "./utils";
 import { DEJAVU_SANS } from "../utils/font-family-list";
 import { certificateFields } from "constants/index";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Col, Row, Card, Button as BSButton, Modal, ModalBody } from "reactstrap";
 import { CompactPicker } from "react-color";
 import Select from "react-select";
@@ -241,9 +241,9 @@ function CertificateNew() {
 
   return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         <title>Editor Sertifikat | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid>
         <BreadcrumbDashboard to={`/dashboard/event/${eventId}/home`}>Dashboard</BreadcrumbDashboard>

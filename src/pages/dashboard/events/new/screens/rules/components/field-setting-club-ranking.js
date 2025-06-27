@@ -7,6 +7,8 @@ import { FieldSelectCategories } from "./field-select-categories";
 import { SelectRadio } from "../../../components/select-radio";
 import { FieldSelectOption } from "../../field-select-option";
 import { useSubmitFormClubRank } from "../hooks/form-club-ranking";
+import { Card, CardBody } from "reactstrap";
+import { ButtonBlue } from "components/ma";
 
 function SettingsClubsRanking({ eventDetail, form, rankingSettings }) {
   // const {
@@ -45,6 +47,8 @@ function SettingsClubsRanking({ eventDetail, form, rankingSettings }) {
 
   useSubmitFormClubRank(data, form.setFormPemeringkatan);
 
+  const loading = false;
+
   return (
     <SettingContainer>
       <SpacedVertical>
@@ -59,7 +63,7 @@ function SettingsClubsRanking({ eventDetail, form, rankingSettings }) {
           </p>
         </div>
 
-        {!rankingSettings && isLoading ? (
+        {!rankingSettings && loading ? (
           <SpinnerDotBlock />
         ) : (
           <React.Fragment>
@@ -141,6 +145,16 @@ function SettingsClubsRanking({ eventDetail, form, rankingSettings }) {
           </React.Fragment>
         )}
       </SpacedVertical>
+      <Card>
+        <CardBody>
+          <ButtonBlue
+            disabled={loading}
+            onClick={() => {}}
+          >
+            Simpan
+          </ButtonBlue>
+        </CardBody>
+      </Card>
     </SettingContainer>
   );
 }

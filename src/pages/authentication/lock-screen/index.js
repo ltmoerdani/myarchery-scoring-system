@@ -1,11 +1,9 @@
 import React from "react"
-import MetaTags from 'react-meta-tags';
+import { Helmet } from "react-helmet-async";
 
 // availity-reactstrap-validation
-import { AvForm, AvField } from "availity-reactstrap-validation"
+import { Form, Input, Button, Container, Row, Col, CardBody, Card, Label } from "reactstrap"
 import { Link } from "react-router-dom"
-
-import { Container, Row, Col, CardBody, Card, Button } from "reactstrap"
 
 // import images
 import profileImg from "../../../assets/images/profile-img.png"
@@ -13,11 +11,16 @@ import logoImg from "../../../assets/images/logo.svg"
 import avatar from "../../../assets/images/users/avatar-man.png"
 
 const LockScreen = () => {
+  const handleValidSubmit = (event) => {
+    event.preventDefault();
+    // Handle form submission
+  };
+
   return (
     <React.Fragment>
-      <MetaTags>
-        <title>Lock Screen | MyArchery</title>
-      </MetaTags>
+      <Helmet>
+        <title>Lock screen | MyArchery.id</title>
+      </Helmet>
       <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
           <i className="fas fa-home h2" />
@@ -57,7 +60,10 @@ const LockScreen = () => {
                     </Link>
                   </div>
                   <div className="p-2">
-                    <AvForm className="form-horizontal">
+                    <Form
+                      className="form-horizontal"
+                      onSubmit={handleValidSubmit}
+                    >
                       <div className="user-thumb text-center mb-4">
                         <img
                           src={avatar}
@@ -68,27 +74,24 @@ const LockScreen = () => {
                       </div>
 
                       <div className="mb-3">
-                        <AvField
+                        <Label className="form-label">Password</Label>
+                        <Input
                           name="password"
-                          label="Password"
+                          className="form-control"
+                          placeholder="Enter password"
                           type="password"
                           required
-                          placeholder="Enter Password"
                         />
                       </div>
 
                       <div className="text-end">
                         <Col xs="12" className="text-end">
-                          <Button
-                            color="primary"
-                            className=" w-md "
-                            type="submit"
-                          >
+                          <Button color="primary" className=" w-md " type="submit">
                             Unlock
-                            </Button>
+                          </Button>
                         </Col>
                       </div>
-                    </AvForm>
+                    </Form>
                   </div>
                 </CardBody>
               </Card>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import {
   Col,
   Container,
@@ -36,9 +36,9 @@ const ListEvent = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-        <MetaTags>
+        <Helmet>
           <title>Dashboard | List - Event</title>
-        </MetaTags>
+        </Helmet>
         <Container fluid>
           {/* Render Breadcrumb */}
           {/* <Breadcrumbs title="Dashboards" breadcrumbItem="Dashboard" /> */}

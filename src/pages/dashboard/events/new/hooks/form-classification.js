@@ -2,18 +2,18 @@ import { useFetcher } from "hooks/alt-fetcher";
 import React from "react";
 import { EventsService } from "services";
 
-export const fetchClassification = (parentId, contentType, refreshData) => {
-  const [parentClassificationList, setParentClassificationList] =
-    React.useState(null);
-  const [childrenClassificationList, setChildrenClassificationList] =
-    React.useState(null);
-  const getParentClassification = async () => {
+export const useClassificationData = (parentId, contentType, refreshData) => {
+  const [parentClassificationList, setParentClassificationList] = React.useState(null);
+  const [childrenClassificationList, setChildrenClassificationList] = React.useState(null);
+
+  const getParentClassification = React.useCallback(async () => {
     const { data } = await EventsService.getParentClassification({
       limit: 100,
     });
     setParentClassificationList(data);
-  };
-  const getChildrenClassification = async (parentId) => {
+  }, []);
+
+  const getChildrenClassification = React.useCallback(async (parentId) => {
     if (parentId) {
       const query = { limit: 100 };
       if (parentId) {
@@ -39,7 +39,8 @@ export const fetchClassification = (parentId, contentType, refreshData) => {
     } else {
       setChildrenClassificationList([]);
     }
-  };
+  }, []);
+
   React.useEffect(() => {
     if (contentType === "list" || refreshData) {
       getParentClassification();
@@ -47,7 +48,7 @@ export const fetchClassification = (parentId, contentType, refreshData) => {
     if (typeof parentId === "number") {
       getChildrenClassification(parentId);
     }
-  }, [parentId, contentType, refreshData]);
+  }, [parentId, contentType, refreshData, getParentClassification, getChildrenClassification]);
 
   return { parentClassificationList, childrenClassificationList };
 };

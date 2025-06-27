@@ -2,7 +2,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "reactstrap";
 import { LatestEventList, CardUserProfile, CardMenuManageUsers } from "./components";
 
@@ -11,9 +11,9 @@ const hrefToListEvent = `/dashboard/event`;
 const Dashboard = () => {
   return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         <title>Dashboard | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="mt-4 mb-5">
         <h1>Dashboard</h1>

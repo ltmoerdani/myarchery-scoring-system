@@ -6,7 +6,7 @@ import { eventConfigs, eventCategories } from "constants/index";
 import { eventDataReducer } from "../hooks/create-event-data";
 import { EventsService } from "services";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { Container, Row, Col } from "reactstrap";
 import { StepList, WizardView, WizardViewContent, Button, ButtonBlue } from "components/ma";
@@ -254,9 +254,9 @@ const PageEventDetailManage = () => {
   return (
     <React.Fragment>
       <StyledPageWrapper>
-        <MetaTags>
+        <Helmet>
           <title>Atur Pertandingan | MyArchery.id</title>
-        </MetaTags>
+        </Helmet>
 
         <Container fluid>
           <BreadcrumbDashboard to={`/dashboard/event/${eventId}/home`}>Kembali</BreadcrumbDashboard>

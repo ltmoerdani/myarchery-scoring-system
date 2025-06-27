@@ -4,7 +4,7 @@ import styled from "styled-components";
 import queryString from "query-string";
 import { EventsService } from "services";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Container } from "reactstrap";
 import { ButtonBlue } from "components/ma";
@@ -221,9 +221,9 @@ function CongratulationsContent({ withSocialSharing }) {
 export default function PageCongratulations() {
   return (
     <div className="page-content">
-      <MetaTags>
+      <Helmet>
         <title>Event baru berhasil dibuat! | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="mt-4 mb-5">
         <CongratulationCardContainer>

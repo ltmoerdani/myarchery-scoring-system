@@ -14,7 +14,7 @@ import { useFormRegistrationDates } from "./hooks/form-registration-dates";
 import { useFormSchedules } from "./hooks/form-schedules";
 import { useSubmitPublicInfos } from "./hooks/submit-public-infos";
 import { useSubmitEventLogo } from "./hooks/submit-event-logo";
-import { useSubmitRegistrationDates } from "./hooks/submit-config-registration-dates";
+import { useSubmitConfigRegistrationDates as useSubmitRegistrationDates } from "./hooks/submit-config-registration-dates";
 import { useSubmitCategories } from "./hooks/submit-categories";
 import { useSubmitRuleSetting } from "./screens/rules/hooks/submit-rule-shoot-setting";
 import { useFormRule } from "./hooks/form-rule";
@@ -56,7 +56,7 @@ import { computeLastUnlockedStep } from "./utils/last-unlocked-step";
 import IconPlus from "components/ma/icons/mono/plus";
 import SelectClassificationSetting from "./components/select-classification-setting";
 import { useCountry } from "./hooks/country";
-import { fetchClassification } from "./hooks/form-classification";
+import { useClassificationData } from './hooks/form-classification';
 
 const { EVENT_TYPES } = eventConfigs;
 
@@ -132,7 +132,7 @@ function PageCreateEventFullday({ classification }) {
     categoryDetails: categoriesQualification,
   });
   const formRule = useFormRule({ eventDetail, rankingSettings });
-  const { parentClassificationList } = fetchClassification(null, "list");
+  const { parentClassificationList } = useClassificationData(null, "list", false);
   const emptyFormSequenceByStep = isTypeSelection
     ? {
         1: formPublicInfos.isEmpty,
@@ -700,21 +700,15 @@ function PageCreateEventFullday({ classification }) {
 
                   formRule.handleValidation({
                     onInvalid: (errors) => {
-                      // TODO: ke depan bisa kasih toast untuk display pesan error
-                      toast.error(
-                        "Terjadi kesalahan saat menyimpan aturan pertandingan club"
-                      );
+                      toast.error("Terjadi kesalahan saat menyimpan aturan pertandingan club");
                       Object.values(errors).forEach((error) => {
-                        console.log(error),
-                          error.forEach((message) => console.error(message));
+                        error.forEach((message) => console.error(message));
                       });
                     },
                     onValid: () => {
                       submitClubRank({
                         onSuccess: () => {
-                          toast.success(
-                            "Pengaturan untuk Pemeringkatan Klub berhasil disimpan"
-                          );
+                          toast.success("Pengaturan untuk Pemeringkatan Klub berhasil disimpan");
                           fetchRankingSetting();
                         },
                       });

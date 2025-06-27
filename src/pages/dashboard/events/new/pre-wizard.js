@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useWizardView } from "utils/hooks/wizard-view";
 import { eventConfigs } from "constants/index";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "reactstrap";
 import { WizardView, WizardViewContent, ProgressBarLine } from "components/ma";
 import Step1 from "../components/pre-wizard/Step1";
@@ -52,9 +52,9 @@ function PreWizard() {
 
   return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         <title>Persiapkan event baru yang dibuat | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="mt-4 mb-5">
         <Row>

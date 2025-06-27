@@ -1,8 +1,6 @@
-import React from "react";
-import MetaTags from "react-meta-tags";
-
-//Verification code package
-import AuthCode from "react-auth-code-input";
+import React, { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import OtpInput from "react-otp-input";
 
 import { Link } from "react-router-dom";
 import {
@@ -20,14 +18,14 @@ import logodark from "../../../assets/images/logo-dark.png";
 import logolight from "../../../assets/images/logo-light.png";
 
 const TwostepVerification = () => {
+  const [otp, setOtp] = useState("");
+
   return (
     <React.Fragment>
+      <Helmet>
+        <title>Two Step Verification | MyArchery.id</title>
+      </Helmet>
       <div className="account-pages my-5 pt-sm-5">
-        <MetaTags>
-          <title>
-            Two Step Verification | MyArchery
-          </title>
-        </MetaTags>
         <Container>
           <Row>
             <Col lg={12}>
@@ -80,10 +78,12 @@ const TwostepVerification = () => {
                                 >
                                   Dight 1
                                 </label>
-                                <AuthCode
-                                  characters={4}
-                                  className="form-control form-control-lg text-center"
-                                  allowedCharacters="^[0-9]"
+                                <OtpInput
+                                  value={otp}
+                                  onChange={setOtp}
+                                  numInputs={4}
+                                  renderSeparator={<span>-</span>}
+                                  renderInput={(props) => <input {...props} />}
                                   inputStyle={{
                                     width: "76px",
                                     height: "42px",

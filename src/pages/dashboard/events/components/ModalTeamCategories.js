@@ -1,6 +1,7 @@
 import { NumberInput } from "components";
 import React, { useEffect, useState } from "react";
 import { Input, Modal } from "reactstrap";
+import _ from "lodash";
 
 const ModalTeamCategories = ({
   isOpen,

@@ -6,7 +6,7 @@ import classnames from "classnames";
 import { useWizardView } from "utils/hooks/wizard-view";
 import { EventsService } from "services";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "reactstrap";
 import { WizardView, WizardViewContent, Button, ButtonBlue } from "components/ma";
 import PanelJadwalKualifikasi from "../components/pre-publish/PanelJadwalKualifikasi";
@@ -107,9 +107,9 @@ function PagePrePublish() {
 
   return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         <title>{currentLabel || "Sedikit Lagi!"} | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="my-5">
         {!eventId ? (

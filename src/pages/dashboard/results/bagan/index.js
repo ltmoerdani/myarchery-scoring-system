@@ -1,5 +1,5 @@
 import React from 'react'
-import { MetaTags } from 'react-meta-tags'
+import { Helmet } from 'react-helmet-async'
 import {
     Container,
     Button,
@@ -13,9 +13,9 @@ function Bagan() {
     return (
         <React.Fragment>
         <div className="page-content">
-            <MetaTags>
+            <Helmet>
                 <title>Dashboard | Bagan</title>
-            </MetaTags>
+            </Helmet>
             <Container fluid>
                 <Link to="/dashboard/result">
                     <Button color="outline-dark">{'<-'}</Button>

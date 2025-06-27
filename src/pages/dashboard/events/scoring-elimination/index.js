@@ -10,7 +10,7 @@ import { ToolbarFilter } from "components/ma/toolbar-filters";
 import { toast } from "components/ma/processing-toast";
 import { ScoringPageWrapper } from "../components/scoring-page-wrapper";
 import { SelectionKnobsView } from "../components/selection-knobs-view";
-import { ButtonShowBracket } from "./components/button-show-bracket";
+import ButtonShowBracket from "./components/button-show-bracket";
 import { MenuDownloadScoresheet } from "./components/menu-download-scoresheet";
 import { ScoringTable } from "./components/scoring-table";
 import { ScoringTableTeam } from "./components/scoring-table-team";

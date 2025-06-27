@@ -1,6 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
-import { MetaTags } from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 // import { SearchBox } from "./components/search-box";
 
 import { EventsService } from "services";
@@ -47,9 +47,9 @@ function PageEventOfficial() {
     <React.Fragment>
         <SubNavbar eventId={event_id} />
 
-        <MetaTags>
+        <Helmet>
                 <title>Dashboard | Official</title>
-        </MetaTags>
+        </Helmet>
 
         <ProcessingToast />
         <Container fluid>

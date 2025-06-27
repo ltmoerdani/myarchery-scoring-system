@@ -1,7 +1,7 @@
 import React from "react"
-import MetaTags from 'react-meta-tags';
 import { Link } from "react-router-dom"
 import { Card, CardBody, Col, Container, Row } from "reactstrap"
+import { Helmet } from "react-helmet-async"
 
 // import images
 import logodark from "../../../assets/images/logo-dark.png"
@@ -11,9 +11,9 @@ const ConfirmMail = () => {
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-sm-5">
-      <MetaTags>
-          <title>Confirm Mail | MyArchery</title>
-        </MetaTags>
+        <Helmet>
+          <title>Confirm Mail | MyArchery.id</title>
+        </Helmet>
         <Container>
           <Row>
             <Col lg={12}>

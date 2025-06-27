@@ -142,6 +142,10 @@ const TableClassification = ({
     }
   );
   const dataFilled = checkingData?.every(Boolean);
+  const getTeamCategoryLabel = (teamCategory) => {
+    if (!teamCategory) return "-";
+    return teamCategory.label || "-";
+  };
   return (
     <TableWrapper>
       <LoadingScreen

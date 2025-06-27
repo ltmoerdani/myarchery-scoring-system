@@ -2,7 +2,7 @@ import * as React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { DosService, EventsService } from "services";
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "reactstrap";
 import { CardEventDos, CardRingkasanDos, CardSchedule } from "./components";
 
@@ -47,9 +47,9 @@ const DashboardDos = () => {
     // console.log( eventNameSchedule, 'kiko')
     return (
     <StyledPageWrapper>
-      <MetaTags>
+      <Helmet>
         <title>Dashboard DOS | MyArchery.id</title>
-      </MetaTags>
+      </Helmet>
 
       <Container fluid className="mt-4 mb-5">
         <h1>Dashboard DOS</h1>

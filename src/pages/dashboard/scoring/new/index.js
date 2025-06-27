@@ -1,5 +1,5 @@
 import React from 'react'
-import { MetaTags } from 'react-meta-tags'
+import { Helmet } from 'react-helmet-async'
 import {
     Container,
     Button,
@@ -16,9 +16,9 @@ function ScoringNew() {
     return (
         <React.Fragment>
             <div className="page-content">
-                <MetaTags>
+                <Helmet>
                     <title>Dashboard | List - Member</title>
-                </MetaTags>
+                </Helmet>
                 <Container fluid>
                 <Row>
                     <Col md={6}>

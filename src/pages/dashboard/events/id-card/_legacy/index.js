@@ -15,7 +15,7 @@ import { prepareSaveData } from "../utils";
 import { DEJAVU_SANS } from "../../../certificates/utils/font-family-list";
 import { idCardFields } from "constants/index";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Col, Row, Card, Button as BSButton, Modal, ModalBody } from "reactstrap";
 import { CompactPicker } from "react-color";
 import Select from "react-select";
@@ -283,9 +283,9 @@ function PageEventIdCard() {
     <React.Fragment>
         <SubNavbar eventId={event_id} />
         
-        <MetaTags>
+        <Helmet>
                 <title>Dashboard | Id Card</title>
-        </MetaTags>
+        </Helmet>
 
       <Container fluid>
        

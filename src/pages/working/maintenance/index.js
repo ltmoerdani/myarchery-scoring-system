@@ -1,5 +1,5 @@
 import React from "react"
-import MetaTags from 'react-meta-tags';
+import { Helmet } from 'react-helmet-async'
 import { Link } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
 
@@ -14,9 +14,9 @@ const Maintenance = () => {
   return (
     <React.Fragment>
       <section className="my-5 pt-sm-5">
-        <MetaTags>
+        <Helmet>
           <title>Maintenance | MyArchery</title>
-        </MetaTags>
+        </Helmet>
         <Container>
           <Row>
             <Col xs="12" className="text-center">

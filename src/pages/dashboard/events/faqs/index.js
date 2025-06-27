@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { Container } from "reactstrap";
-import { MetaTags } from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import logoEmpty from "assets/images/myachery/empty.png";
 import { Modal, ModalBody } from "reactstrap";
@@ -148,9 +148,9 @@ function PageEventFaqs() {
     <React.Fragment>
       <SubNavbar eventId={event_id} />
       <div>
-        <MetaTags>
+        <Helmet>
           <title>Dashboard | List - FAQ</title>
-        </MetaTags>
+        </Helmet>
         <WarpperFAQ>
           <Container fluid>
             <div className="box-header">

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { MetaTags } from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import styled from "styled-components";
 import { useParams, useLocation } from "react-router-dom";
 import { EventsService } from "services";
@@ -105,9 +105,9 @@ function PageDosQualification() {
   return (
     <React.Fragment>
       <div>
-        <MetaTags>
+        <Helmet>
           <title>{pageTitle}</title>
-        </MetaTags>
+        </Helmet>
 
         <Container fluid>
           <BreadcrumbDashboard to={`/dashboard/event/${event_id}/home`}>

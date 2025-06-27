@@ -5,7 +5,7 @@ import { useWizardView } from "utils/hooks/wizard-view";
 import { eventCategories } from "constants/index";
 import * as AuthStore from "store/slice/authentication";
 
-import CurrencyFormat from "react-currency-format";
+import { NumericFormat } from "react-number-format";
 import { Container, Row, Col } from "reactstrap";
 import { Button, ButtonOutline, WizardView, WizardViewContent } from "components/ma";
 
@@ -235,7 +235,7 @@ function CopywritingRegistrationFee({ eventData }) {
     return (
       <React.Fragment>
         Mulai dari{" "}
-        <CurrencyFormat
+        <NumericFormat
           displayType={"text"}
           value={eventData.registrationFee}
           prefix="Rp&nbsp;"
@@ -291,7 +291,7 @@ function CopywritingRegistrationFee({ eventData }) {
       <React.Fragment>
         Mulai dari{" "}
         {lowestFee ? (
-          <CurrencyFormat
+          <NumericFormat
             displayType={"text"}
             value={lowestFee}
             prefix="Rp&nbsp;"

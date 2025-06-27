@@ -22,6 +22,7 @@ import { ScoringTeamTable } from "./components/scoring-table/reguTable";
 
 import IconDownload from "components/ma/icons/mono/download";
 import { useQualificationDownload } from "pages/dashboard/events/scoring-qualification/hooks/qualification-download";
+import { LoadingScreen } from "components/ma";
 
 const pageProps = {
   pageTitle: "Kualifikasi",
@@ -44,6 +45,15 @@ function PageDosQualification() {
   const [session, setSession] = React.useState(0);
   const { handleDownloadSession } = useSessionDownload(activeCategory?.id);
   const { download: downloadQualification } = useQualificationDownload(eventId, activeCategory?.id);
+  const [selectedParticipant, setSelectedParticipant] = React.useState(null);
+  const [isModalParticipantOpen, setIsModalParticipantOpen] = React.useState(false);
+  const [data, setData] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Load your data here
+    setIsLoading(false);
+  }, []);
 
   // TODO:
   const resetOnChangeCategory = () => {
@@ -55,6 +65,10 @@ function PageDosQualification() {
   const optionsSession = _makeOptionsSessionFromCount(sessionCount);
 
   const errorFetchingInitialCategories = !categoryDetails && errorsCategoryDetail;
+
+  if (isLoading) {
+    return <LoadingScreen loading={true} />;
+  }
 
   if (errorFetchingInitialCategories) {
     return (
@@ -114,6 +128,7 @@ function PageDosQualification() {
             <ToolbarViewRight
               isIndividual={isIndividual}
               sessionOptions={optionsSession}
+              session={session}
               onDownload={(session) => {
                 toast.loading("Sedang menyiapkan dokumen kualifikasi DOS...");
                 if (session === 'qualification') {
@@ -176,6 +191,8 @@ function PageDosQualification() {
 }
 
 function ToolbarViewRight({ isIndividual, sessionOptions, session, onDownload }) {
+  const [isOpen, setOpen] = React.useState(false);
+
   if (isIndividual) {
     return (
       <HorizontalSpaced>
@@ -183,8 +200,6 @@ function ToolbarViewRight({ isIndividual, sessionOptions, session, onDownload })
       </HorizontalSpaced>
     );
   }
-
-  const [isOpen, setOpen] = React.useState(false);
 
   return (
     <HorizontalSpaced>

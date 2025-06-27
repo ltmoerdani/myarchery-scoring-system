@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import { stringUtil } from "utils";
+import { datetime } from "utils";
+import { filesUtil } from "utils";
 import { useWizardView } from "utils/hooks/wizard-view";
 import { eventConfigs, eventCategories } from "constants/index";
 import { eventDataReducer } from "../../hooks/create-event-data";
+import { useEventDataValidation } from "../hooks/event-data-validation";
+import { makeStateCategories } from "../utils/event-categories";
+import { makeStateFees } from "../utils/event-fees";
 import { EventsService } from "services";
 
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet-async";
 import { Container, Row, Col } from "reactstrap";
 import SweetAlert from "react-bootstrap-sweetalert";
 import { Toaster } from "react-hot-toast";
@@ -112,6 +117,20 @@ const initialEventData = {
     { key: 4, teamCategory: TEAM_CATEGORIES.TEAM_MIXED, amount: "" },
   ],
   dateEarlyBird: null,
+};
+
+// Helper functions
+const { formatServerDatetime } = datetime;
+const { fileToBase64: imageToBase64 } = filesUtil;
+
+// Category helper functions
+const makeEventCategories = makeStateCategories;
+const makeCategoryFees = makeStateFees;
+
+// Function to simulate form submission
+const sendFakeSubmit = () => {
+  // Placeholder function for fake submit
+  console.log("Fake submit called");
 };
 
 // Komponen utama EventsNewFullday
@@ -270,9 +289,9 @@ const EventsNewFullday = () => {
       )}
 
       <StyledPageWrapper>
-        <MetaTags>
+        <Helmet>
           <title>Buat Event Baru | MyArchery.id</title>
-        </MetaTags>
+        </Helmet>
 
         <Container fluid>
           <StickyContainer>

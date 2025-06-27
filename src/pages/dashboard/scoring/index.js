@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { MetaTags } from 'react-meta-tags'
+import { Helmet } from 'react-helmet-async'
 import {
     Container,
     Button,
@@ -21,9 +21,9 @@ function ListScoring() {
     return (
         <React.Fragment>
             <div className="page-content">
-                <MetaTags>
+                <Helmet>
                     <title>Dashboard | List - Scoring</title>
-                </MetaTags>
+                </Helmet>
                 <Container fluid>
                 <Link to="/dashboard">
                     <Button color="outline-dark">{'<-'}</Button>

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { PageWrapper as GeneralPageWrapper } from "components/ma/page-wrapper";
+import GeneralPageWrapper from "components/ma/page-wrapper";
 import { SideBar } from "./sidebar";
 
 function PageWrapper({ children, pageTitle }) {

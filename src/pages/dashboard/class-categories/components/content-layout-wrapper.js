@@ -1,38 +1,27 @@
-import * as React from "react";
-import styled from "styled-components";
-import { useLocation } from "react-router-dom";
-
-import MetaTags from "react-meta-tags";
+import React from "react";
+import PropTypes from "prop-types";
+import { Helmet } from "react-helmet-async";
 import { Container } from "reactstrap";
-import { BreadcrumbDashboard } from "../../components/breadcrumb";
+import Breadcrumb from "components/Common/Breadcrumb";
 
-function ContentLayoutWrapper({ children, pageTitle, navbar }) {
-  const { state } = useLocation();
-  const backButtonURL = state?.from || "/dashboard";
+function ContentLayoutWrapper({ pageTitle, breadcrumbText, children }) {
   return (
-    <React.Fragment>
-      <MetaTags>
-        {pageTitle ? <title>{pageTitle} | MyArchery.id</title> : <title>MyArchery.id</title>}
-      </MetaTags>
-
-      {navbar}
-
+    <div className="page-content">
+      <Helmet>
+        <title>{pageTitle} | MyArchery.id</title>
+      </Helmet>
       <Container fluid>
-        <BreadcrumbDashboard to={backButtonURL}>Kembali</BreadcrumbDashboard>
-        <StyledPageWrapper>{children}</StyledPageWrapper>
+        <Breadcrumb breadcrumbText={breadcrumbText} />
+        {children}
       </Container>
-    </React.Fragment>
+    </div>
   );
 }
 
-const StyledPageWrapper = styled.div`
-  margin: 2.5rem 0;
-
-  @media (min-width: 768px) {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-`;
+ContentLayoutWrapper.propTypes = {
+  pageTitle: PropTypes.string,
+  breadcrumbText: PropTypes.string,
+  children: PropTypes.node,
+};
 
 export { ContentLayoutWrapper };

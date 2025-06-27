@@ -3,12 +3,7 @@ import styled from "styled-components";
 import { useEliminationBracketTemplate } from "../hooks/elimination-template";
 
 import { Modal, ModalBody } from "reactstrap";
-import {
-  Bracket,
-  Seed as RBSeed,
-  SeedItem as RBSeedItem,
-  SeedTeam as RBSeedTeam,
-} from "react-brackets";
+import { Bracket, SeedItem } from "@sportsgram/brackets";
 import {
   ButtonOutlineBlue,
   LoadingScreen,
@@ -202,15 +197,9 @@ function SeedPreview({ bracketProps, configs, eventDetail }) {
   React.useEffect(() => {}, [eventDetail]);
 
   return (
-    <Seed
-      mobileBreakpoint={breakpoint}
-      className={classnames({
-        "round-final": isFinalRound,
-        "round-third-place": isThirdPlaceRound,
-      })}
-    >
-      <SeedItem>
-        <ItemContainer>
+    <StyledSeed>
+      <StyledSeedItem>
+        <StyledSeedTeam>
           {isFinalRound && <FinalHeading>Babak Final</FinalHeading>}
           {isThirdPlaceRound && <FinalHeading>Perebutan Juara 3</FinalHeading>}
 
@@ -239,7 +228,7 @@ function SeedPreview({ bracketProps, configs, eventDetail }) {
                   {/* {budrestNumber || <React.Fragment>&ndash;</React.Fragment>} */}
                 </SeedBudrest>
 
-                <SeedTeam
+                <StyledSeedTeam
                   key={index}
                   title={team.name || team.team}
                   className={classnames({
@@ -290,7 +279,7 @@ function SeedPreview({ bracketProps, configs, eventDetail }) {
                       </MemberList>
                     )}
                   </BoxNameGroup>
-                </SeedTeam>
+                </StyledSeedTeam>
 
                 <SeedRank>
                   {team.potition || team.postition ? (
@@ -304,9 +293,9 @@ function SeedPreview({ bracketProps, configs, eventDetail }) {
               </SeedWrapper>
             );
           })}
-        </ItemContainer>
-      </SeedItem>
-    </Seed>
+        </StyledSeedTeam>
+      </StyledSeedItem>
+    </StyledSeed>
   );
 }
 
@@ -321,15 +310,9 @@ function SeedBagan({ bracketProps, configs, eventDetail }) {
   React.useEffect(() => {}, [eventDetail]);
 
   return (
-    <Seed
-      mobileBreakpoint={breakpoint}
-      className={classnames({
-        "round-final": isFinalRound,
-        "round-third-place": isThirdPlaceRound,
-      })}
-    >
-      <SeedItem>
-        <ItemContainer>
+    <StyledSeed>
+      <StyledSeedItem>
+        <StyledSeedTeam>
           {isFinalRound && <FinalHeading>Babak Final</FinalHeading>}
           {isThirdPlaceRound && <FinalHeading>Perebutan Juara 3</FinalHeading>}
 
@@ -359,7 +342,7 @@ function SeedBagan({ bracketProps, configs, eventDetail }) {
                   )}
                 </SeedBudrest>
 
-                <SeedTeam
+                <StyledSeedTeam
                   title={team.name || team.teamName}
                   className={classnames({
                     "item-even": index === 1,
@@ -409,7 +392,7 @@ function SeedBagan({ bracketProps, configs, eventDetail }) {
                       </MemberList>
                     )}
                   </BoxNameGroup>
-                </SeedTeam>
+                </StyledSeedTeam>
 
                 <SeedRank>
                   {team.potition ? (
@@ -421,9 +404,9 @@ function SeedBagan({ bracketProps, configs, eventDetail }) {
               </SeedWrapper>
             );
           })}
-        </ItemContainer>
-      </SeedItem>
-    </Seed>
+        </StyledSeedTeam>
+      </StyledSeedItem>
+    </StyledSeed>
   );
 }
 
@@ -495,7 +478,7 @@ const FinalHeading = styled.h6`
   text-align: center;
 `;
 
-const Seed = styled(RBSeed)`
+const StyledSeed = styled(Bracket)`
   padding-top: 2rem;
   padding-bottom: 2rem;
 
@@ -504,7 +487,7 @@ const Seed = styled(RBSeed)`
   }
 `;
 
-const SeedItem = styled(RBSeedItem)`
+const StyledSeedItem = styled(SeedItem)`
   border-radius: 0.5rem;
   background-color: #ffffff;
   box-shadow: none;
@@ -560,7 +543,7 @@ const SeedRank = styled.div`
   vertical-align: middle;
 `;
 
-const SeedTeam = styled(RBSeedTeam)`
+const StyledSeedTeam = styled(SeedItem)`
   gap: 0.25rem;
   padding: 0.5rem;
   border: solid 2px #757575;
@@ -663,4 +646,4 @@ function _getRoundPositions({ totalRounds, roundIndex }) {
   return { isFinalRound, isThirdPlaceRound };
 }
 
-export { ButtonShowBracket };
+export default ButtonShowBracket;

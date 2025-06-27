@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { Container, Row, Col } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import { Helmet } from 'react-helmet-async'
 
 //Import Images
 import error from "../../../assets/images/error-img.png"
@@ -10,9 +10,9 @@ const NotFound = () => {
   return (
     <React.Fragment>
       <div className="account-pages my-5 pt-5">
-        <MetaTags>
+        <Helmet>
           <title>404 Error Page | MyArchery</title>
-        </MetaTags>
+        </Helmet>
         <Container>
           <Row>
             <Col lg="12">

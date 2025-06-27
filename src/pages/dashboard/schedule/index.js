@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, {useState, useEffect, useRef} from 'react'
-import { MetaTags } from 'react-meta-tags'
+import { Helmet } from 'react-helmet-async'
 import {
     Container,
     Button,
@@ -119,9 +119,9 @@ function ListMember() {
         <React.Fragment>
             <LoadingScreen loading={loading} />
             <div className="page-content">
-                <MetaTags>
+                <Helmet>
                     <title>Dashboard | Schedule</title>
-                </MetaTags>
+                </Helmet>
                 <Container fluid>
                 <Link to="/dashboard/events">
                     <Button color="outline-dark">{'<-'}</Button>

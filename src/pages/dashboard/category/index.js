@@ -1,5 +1,5 @@
 import React from 'react'
-import { MetaTags } from 'react-meta-tags'
+import { Helmet } from 'react-helmet-async'
 import {
     Container,
     Button,
@@ -16,9 +16,9 @@ function ListCategory() {
     return (
         <React.Fragment>
             <div className="page-content">
-                <MetaTags>
-                    <title>Dashboard | List - Member</title>
-                </MetaTags>
+                <Helmet>
+                    <title>Master Kategori | MyArchery.id</title>
+                </Helmet>
                 <Container fluid>
                 <Link to="/dashboard">
                     <Button color="outline-dark">{'<-'}</Button>

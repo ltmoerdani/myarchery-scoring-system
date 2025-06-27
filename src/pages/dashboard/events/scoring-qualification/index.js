@@ -20,7 +20,7 @@ import { SearchBox } from "./components/search-box";
 import { ButtonDownloadScoresheet } from "./components/button-download-scoresheet";
 import { ButtonConfirmPrompt } from "./components/button-confirm-prompt";
 import { ButtonCancelBracket } from "./components/button-cancel-bracket";
-import { ButtonShowBracket } from "./components/button-show-bracket";
+import ButtonShowBracket from "./components/button-show-bracket";
 
 import IconCheck from "components/ma/icons/fill/check";
 import { useQualificationDownload } from "./hooks/qualification-download";

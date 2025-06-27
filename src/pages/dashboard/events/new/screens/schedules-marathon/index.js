@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { toast } from "../../components/processing-toast";
 import { useFormScheduleMarathon } from "./hooks/form-schedule-marathon";
 import { useSubmitSchedules } from "./hooks/submit-schedules";
+import { useFormSchedules } from "../../hooks/form-schedules";
 
 import {
   NoticeBarInfo,
@@ -26,6 +27,7 @@ function ScreenSchedulesMarathon({
   eventType,
   categories,
   onSuccessSubmit,
+  schedules = [],
 }) {
   const formSchedules = useFormSchedules(schedules, {
     eventType,
