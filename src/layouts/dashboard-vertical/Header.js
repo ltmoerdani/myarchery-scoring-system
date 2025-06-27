@@ -174,9 +174,6 @@ const Header = props => {
                           <li>
                             <Link to="#">{props.t("Timeline")}</Link>
                           </li>
-                          <li>
-                            <Link to="#">{props.t("FAQs")}</Link>
-                          </li>
                         </ul>
                       </Col>
                     </Row>

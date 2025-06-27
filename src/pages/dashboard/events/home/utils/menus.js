@@ -51,13 +51,6 @@ const eventMenus = {
     description: "Daftarkan event Anda menjadi bagian dari series",
     computeLink: () => "#",
   },
-  8: {
-    id: 8,
-    icon: userPlus,
-    title: "Pengaturan Acara",
-    description: "Bantalan, Run Down, BIB, Dokumen (ID Card dan Sertifikat), FAQ",
-    computeLink: (eventId) => (eventId ? `/dashboard/event/${eventId}/faqs` : "#"),
-  },
 };
 
 export { eventMenus };
