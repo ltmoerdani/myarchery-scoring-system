@@ -40,9 +40,9 @@ const eventMenus = {
   6: {
     id: 6,
     icon: fileText,
-    title: "Dokumen",
-    description: "Master e-sertifikat",
-    computeLink: (eventId) => `/dashboard/certificate/new?event_id=${eventId}`,
+    title: "Laporan",
+    description: "Laporan jumlah peserta, laporan keuangan, laporan pertandingan",
+    computeLink: (eventId) => `/dashboard/event/${eventId}/reports`,
   },
   7: {
     id: 7,
