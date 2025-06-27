@@ -23,7 +23,7 @@ import imgEmptyBracket from "assets/images/elimination/illustration-empty-bracke
 import classnames from "classnames";
 
 function ScoringTable({ categoryDetailId, categoryDetails, eliminationMemberCounts }) {
-  const { isError, data, fetchEliminationMatches } = useEliminationMatches(
+  const { isError, isSuccess, data, fetchEliminationMatches } = useEliminationMatches(
     categoryDetailId,
     eliminationMemberCounts
   );

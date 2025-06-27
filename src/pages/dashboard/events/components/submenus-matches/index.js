@@ -1,8 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 import { useParams, NavLink } from "react-router-dom";
-
 import { Container } from "reactstrap";
+
+
 
 import IconHome from "components/ma/icons/mono/home";
 import IconBudRest from "components/ma/icons/mono/bud-rest";
@@ -82,7 +83,6 @@ const StyledSubNavbar = styled.div`
 
     list-style: none;
     padding: 0.625rem 0;
-  }
 `;
 
 const NavLinkItem = styled(NavLink)`

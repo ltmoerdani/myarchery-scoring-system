@@ -8,6 +8,14 @@
 @import "./bootstrap.scss";
 @import "./app.scss";
 
+.page-content {
+  padding: 0;
+}
+
+.subnavbar-container {
+  /* margin-bottom: 1.25rem; */
+}
+
 // // RTL Mode
 // @import "./rtl/bootstrap-rtl";
 // @import "./rtl/components-rtl";

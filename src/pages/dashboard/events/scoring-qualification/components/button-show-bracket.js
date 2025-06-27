@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useEliminationBracketTemplate } from "../hooks/elimination-template";
 
 import { Modal, ModalBody } from "reactstrap";
@@ -21,6 +22,11 @@ function ButtonShowBracket({
   eliminationMemberCount,
   eventDetail,
 }) {
+  ButtonShowBracket.propTypes = {
+    categoryDetailId: PropTypes.string.isRequired,
+    eliminationMemberCount: PropTypes.number.isRequired,
+    eventDetail: PropTypes.object.isRequired,
+  };
   const [isOpen, setOpen] = React.useState(false);
   const {
     data: bracketData,
@@ -187,7 +193,22 @@ function NoBracketAvailable() {
 }
 
 function SeedPreview({ bracketProps, configs, eventDetail }) {
-  const { roundIndex, seed, breakpoint } = bracketProps;
+  SeedPreview.propTypes = {
+    bracketProps: PropTypes.shape({
+      roundIndex: PropTypes.number.isRequired,
+      seed: PropTypes.shape({
+        teams: PropTypes.array.isRequired,
+      }).isRequired,
+      breakpoint: PropTypes.number,
+    }).isRequired,
+    configs: PropTypes.shape({
+      totalRounds: PropTypes.number.isRequired,
+      isTeam: PropTypes.bool.isRequired,
+    }).isRequired,
+    eventDetail: PropTypes.object.isRequired,
+  };
+
+  const { roundIndex, seed } = bracketProps;
   const { totalRounds, isTeam } = configs;
   const { isFinalRound, isThirdPlaceRound } = _getRoundPositions({
     totalRounds,
@@ -300,7 +321,22 @@ function SeedPreview({ bracketProps, configs, eventDetail }) {
 }
 
 function SeedBagan({ bracketProps, configs, eventDetail }) {
-  const { roundIndex, seed, breakpoint } = bracketProps;
+  SeedBagan.propTypes = {
+    bracketProps: PropTypes.shape({
+      roundIndex: PropTypes.number.isRequired,
+      seed: PropTypes.shape({
+        teams: PropTypes.array.isRequired,
+      }).isRequired,
+      breakpoint: PropTypes.number,
+    }).isRequired,
+    configs: PropTypes.shape({
+      totalRounds: PropTypes.number.isRequired,
+      isTeam: PropTypes.bool.isRequired,
+    }).isRequired,
+    eventDetail: PropTypes.object.isRequired,
+  };
+
+  const { roundIndex, seed } = bracketProps;
   const { totalRounds, isTeam } = configs;
   const { isFinalRound, isThirdPlaceRound } = _getRoundPositions({
     totalRounds,
@@ -567,9 +603,7 @@ const StyledSeedTeam = styled(SeedItem)`
   }
 `;
 
-const ItemContainer = styled.div`
-  position: relative;
-`;
+
 
 const BoxNameGroup = styled.span`
   display: flex;

@@ -53,11 +53,6 @@ function ScoringTable({
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  React.useEffect(() => {
-    if (refecthData) fetchScoringMembers();
-    if (isSuccess || isErrorScoringMembers) refectchUpdated();
-  }, [refecthData, isSuccess, isErrorScoringMembers]);
-
   const {
     data: scoringMembers,
     searchQuery,
@@ -73,6 +68,11 @@ function ScoringTable({
     false, // bukan beregu
     scoreType
   );
+
+  React.useEffect(() => {
+    if (refecthData) fetchScoringMembers();
+    if (isSuccess || isErrorScoringMembers) refectchUpdated();
+  }, [refecthData, isSuccess, isErrorScoringMembers]);
   const isSettledScoringMembers =
     scoringMembers || (!scoringMembers && isErrorScoringMembers);
 

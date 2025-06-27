@@ -5,9 +5,12 @@ import { SubNavbar } from "./submenus-matches";
 
 function ScoringPageWrapper({ children, pageTitle, isSelectionType }) {
   return (
-    <PageWrapper pageTitle={pageTitle} navbar={<SubNavbar isSelectionType={isSelectionType} />}>
-      {children}
-    </PageWrapper>
+    <>
+      <SubNavbar isSelectionType={isSelectionType} />
+      <PageWrapper pageTitle={pageTitle}>
+        {children}
+      </PageWrapper>
+    </>
   );
 }
 
