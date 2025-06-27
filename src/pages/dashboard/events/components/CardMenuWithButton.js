@@ -3,15 +3,23 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Download from "components/icons/Download";
 import { Button } from "reactstrap";
+import PropTypes from "prop-types";
+import fileText from "../../../../assets/images/icons/event-menu-file-text.svg";
 
-function CardMenuWithButton({ eventDetail, menu, href, badge, disabled = false, team = false }) {
+function CardMenuWithButton({ eventDetail, menu, href, badge, disabled = false, team = false, spanLabel }) {
+  // Provide fallback for menu and icon
+  const safeMenu = menu || {};
+  const icon = safeMenu.icon || fileText;
+  const title = safeMenu.title || "";
+  const description = safeMenu.description || "";
+
   if (disabled) {
     return (
       <DisabledCardMenuContainer>
         <div className="menu-body">
           <div className="d-flex justify-content-between">
             <div className="menu-icon mb-3">
-              <img className="menu-icon-img" src={menu.icon} />
+              <img className="menu-icon-img" src={icon} alt="menu icon" />
             </div>
             <div>
               <Button
@@ -24,8 +32,8 @@ function CardMenuWithButton({ eventDetail, menu, href, badge, disabled = false, 
             </div>
           </div>
 
-          <h3>{menu.title}</h3>
-          <p>{menu.description}</p>
+          <h3>{title}</h3>
+          <p>{description}</p>
         </div>
 
         <div className="menu-footer">
@@ -46,19 +54,19 @@ function CardMenuWithButton({ eventDetail, menu, href, badge, disabled = false, 
       <div className="menu-body">
         <div className="d-flex justify-content-between">
           <div className="menu-icon mb-3">
-            <img className="menu-icon-img" src={menu.icon} />
+            <img className="menu-icon-img" src={icon} alt="menu icon" />
           </div>
         </div>
 
-        <h3>{menu.title}</h3>
-        <p>{menu.description}</p>
-        <div>
-          <span className="py-1 px-2" style={{ backgroundColor: "#AEDDC2", borderRadius: "25px" }}>
-            {team
-              ? `Peserta Beregu:${eventDetail?.totalParticipantTeam}`
-              : `Peserta Individu:${eventDetail?.totalParticipantIndividual}`}
-          </span>
-        </div>
+        <h3>{title}</h3>
+        <p>{description}</p>
+        {spanLabel && (
+          <div>
+            <span className="py-1 px-2" style={{ backgroundColor: "#AEDDC2", borderRadius: "25px" }}>
+              {spanLabel}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="position-relative">
@@ -74,6 +82,20 @@ function CardMenuWithButton({ eventDetail, menu, href, badge, disabled = false, 
     </CardMenuContainer>
   );
 }
+
+CardMenuWithButton.propTypes = {
+  eventDetail: PropTypes.object,
+  menu: PropTypes.shape({
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+  }),
+  href: PropTypes.string,
+  badge: PropTypes.node,
+  disabled: PropTypes.bool,
+  team: PropTypes.bool,
+  spanLabel: PropTypes.string,
+};
 
 const DisabledCardMenuContainer = styled.div`
   position: relative;

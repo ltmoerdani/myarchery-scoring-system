@@ -1,18 +1,40 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import fileText from "../../../../assets/images/icons/event-menu-file-text.svg";
 
 function CardMenu({ menu, href, badge, disabled = false }) {
+  // Provide fallback for menu and icon
+  if (!menu) {
+    return (
+      <CardMenuContainer>
+        <div className="menu-body">
+          <div className="menu-icon mb-3">
+            <img className="menu-icon-img" src={fileText} alt="menu icon" />
+          </div>
+          <h3>Menu tidak ditemukan</h3>
+          <p>Konfigurasi menu belum tersedia. Silakan cek data eventMenus.</p>
+        </div>
+      </CardMenuContainer>
+    );
+  }
+
+  const safeMenu = menu || {};
+  const icon = safeMenu.icon || fileText;
+  const title = safeMenu.title || "";
+  const description = safeMenu.description || "";
+
   if (disabled) {
     return (
       <DisabledCardMenuContainer>
         <div className="menu-body">
           <div className="menu-icon mb-3">
-            <img className="menu-icon-img" src={menu.icon} />
+            <img className="menu-icon-img" src={icon} alt="menu icon" />
           </div>
 
-          <h3>{menu.title}</h3>
-          <p>{menu.description}</p>
+          <h3>{title}</h3>
+          <p>{description}</p>
         </div>
 
         <div className="menu-footer">
@@ -32,11 +54,11 @@ function CardMenu({ menu, href, badge, disabled = false }) {
     <CardMenuContainer>
       <div className="menu-body">
         <div className="menu-icon mb-3">
-          <img className="menu-icon-img" src={menu.icon} />
+          <img className="menu-icon-img" src={icon} alt="menu icon" />
         </div>
 
-        <h3>{menu.title}</h3>
-        <p>{menu.description}</p>
+        <h3>{title}</h3>
+        <p>{description}</p>
       </div>
 
       <div className="menu-footer">
@@ -50,6 +72,17 @@ function CardMenu({ menu, href, badge, disabled = false }) {
     </CardMenuContainer>
   );
 }
+
+CardMenu.propTypes = {
+  menu: PropTypes.shape({
+    icon: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+  }),
+  href: PropTypes.string,
+  badge: PropTypes.node,
+  disabled: PropTypes.bool,
+};
 
 const DisabledCardMenuContainer = styled.div`
   position: relative;

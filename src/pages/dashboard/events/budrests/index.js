@@ -58,22 +58,22 @@ function PageEventBudRests() {
           )}
 
           <VerticalSpacedBoxLoose>
-            {isPreparingBudrestSettings ? (
-              <div>Sedang menyiapkan data pengaturan bantalan...</div>
-            ) : budrestSettings ? (
-              budrestSettings.length ? (
-                budrestSettings.map((settingsByDate) => (
-                  <BudrestSettingEditorByDate
-                    key={settingsByDate.key}
-                    settingsByDate={settingsByDate}
-                  />
-                ))
-              ) : (
-                <div>Data kategori atau jadwal belum tersedia.</div>
-              )
-            ) : (
-              <div>Tidak ada data.</div>
+            {isPreparingBudrestSettings && <div>Sedang menyiapkan data pengaturan bantalan...</div>}
+            {Boolean(budrestSettings) && (
+              <>
+                {budrestSettings.length ? (
+                  budrestSettings.map((settingsByDate) => (
+                    <BudrestSettingEditorByDate
+                      key={settingsByDate.key}
+                      settingsByDate={settingsByDate}
+                    />
+                  ))
+                ) : (
+                  <div>Data kategori atau jadwal belum tersedia.</div>
+                )}
+              </>
             )}
+            {budrestSettings === null && <div>Tidak ada data.</div>}
           </VerticalSpacedBoxLoose>
         </VerticalSpacedBox>
       </CardSheet>

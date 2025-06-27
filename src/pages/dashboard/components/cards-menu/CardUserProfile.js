@@ -127,13 +127,13 @@ function CardUserProfile() {
           {!userProfile?.avatar ? (
             <div className="menu-thumbnail flex-shrink-0">
               <div className="menu-icon">
-                <img className="menu-icon-img" src={userIcon} />
+                <img className="menu-icon-img" src={userIcon} alt="user icon" />
               </div>
             </div>
           ) : (
             <div className="menu-thumbnail flex-shrink-0">
               <div className="menu-user-avatar">
-                <img className="menu-user-avatar-img" src={userProfile?.avatar} />
+                <img className="menu-user-avatar-img" src={userProfile?.avatar} alt="user avatar" />
               </div>
             </div>
           )}

@@ -1,4 +1,5 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { EventsService } from "services";
 
@@ -6,7 +7,6 @@ import { Link } from "react-router-dom";
 import Calendar from "components/icons/Calendar";
 import MapPin from "components/icons/MapPin";
 import Panah from "components/icons/Panah";
-// import IconMoreVertical from "components/ma/icons/fill/more-vertical";
 import { ButtonMoreMenu } from "../hooks/more-menu";
 
 const formatDate = (datetimeString) => {
@@ -41,6 +41,11 @@ function EventCity({ children, city }) {
   );
 }
 
+EventCity.propTypes = {
+  children: PropTypes.node,
+  city: PropTypes.string,
+};
+
 function EventDateRange({ from, to }) {
   const isDateAvailable = from && to;
 
@@ -58,6 +63,11 @@ function EventDateRange({ from, to }) {
   );
 }
 
+EventDateRange.propTypes = {
+  from: PropTypes.string,
+  to: PropTypes.string,
+};
+
 const EventItemCardWrapper = styled.div`
   position: relative;
 
@@ -74,11 +84,10 @@ const EventItemCardWrapper = styled.div`
   transition: all 0.4s;
 
   .event-body {
-    overflow: "hidden";
+    overflow: hidden;
 
     .event-icon {
       display: flex;
-      // justify-content: flex-end;
       margin-bottom: 1rem;
     }
 
@@ -112,15 +121,6 @@ const EventItemCardWrapper = styled.div`
     .footer-date {
       flex: 1 0 100%;
     }
-
-    // .event-link::before {
-    //   content: " ";
-    //   position: absolute;
-    //   top: 0;
-    //   right: 0;
-    //   bottom: 0;
-    //   left: 0;
-    // }
   }
 
   &:hover {
@@ -136,7 +136,7 @@ function EventItemCard({ event, getEvent }) {
   });
 
   const eventDetailData = eventDetail.data;
-  const hrefToEventHome = event?.id ? `/dashboard/event/${event.id}/home` : "#";
+  const hrefToEventHome = event && event.id ? `/dashboard/event/${event.id}/home` : "#";
 
   const getEventDetail = async () => {
     setEventDetail((state) => ({ ...state, status: "loading", errors: null }));
@@ -150,6 +150,7 @@ function EventItemCard({ event, getEvent }) {
 
   React.useEffect(() => {
     getEventDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -158,25 +159,25 @@ function EventItemCard({ event, getEvent }) {
         <div className="event-icon">
           <Panah size={28} color="#afafaf" />
           <Publish
-            className={eventDetailData?.publicInformation.eventStatus ? "publikasi" : "draft"}
+            className={eventDetailData?.publicInformation?.eventStatus ? "publikasi" : "draft"}
           >
-            <p>{eventDetailData?.publicInformation.eventStatus ? "Terpublikasi" : "Draft"}</p>
+            <p>{eventDetailData?.publicInformation?.eventStatus ? "Terpublikasi" : "Draft"}</p>
           </Publish>
           <div style={{ marginLeft: "auto" }}>
             <ButtonMoreMenu event={eventDetailData} fetchEventDetail={getEventDetail} getEvent={getEvent}/>
           </div>
         </div>
         <h4 className="event-title">
-          {eventDetailData?.publicInformation.eventName || "Nama Event tidak tersedia"}
+          {eventDetailData?.publicInformation?.eventName || "Nama Event tidak tersedia"}
         </h4>
-        <EventCity>{eventDetailData?.publicInformation.eventCity?.nameCity}</EventCity>
+        <EventCity>{eventDetailData?.publicInformation?.eventCity?.nameCity}</EventCity>
       </div>
 
       <div className="event-footer">
         <div className="footer-date">
           <EventDateRange
-            from={eventDetailData?.publicInformation.eventStart}
-            to={eventDetailData?.publicInformation.eventEnd}
+            from={eventDetailData?.publicInformation?.eventStart}
+            to={eventDetailData?.publicInformation?.eventEnd}
           />
         </div>
 
@@ -194,11 +195,18 @@ function EventItemCard({ event, getEvent }) {
   );
 }
 
+EventItemCard.propTypes = {
+  event: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  }),
+  getEvent: PropTypes.func,
+};
+
 function StatusLabel({ eventDetailData }) {
   const [isQualificationSchedulesSet, setIsQualificationSchedulesSet] = React.useState(false);
 
   const { id: eventId } = eventDetailData || {};
-  const isEventPublished = Boolean(parseInt(eventDetailData?.publicInformation.eventStatus));
+  const isEventPublished = Boolean(parseInt(eventDetailData?.publicInformation?.eventStatus));
 
   React.useEffect(() => {
     if (!eventId) {
@@ -234,6 +242,15 @@ function StatusLabel({ eventDetailData }) {
 
   return null;
 }
+
+StatusLabel.propTypes = {
+  eventDetailData: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    publicInformation: PropTypes.shape({
+      eventStatus: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  }),
+};
 
 const WarningBadge = styled.div`
   display: flex;

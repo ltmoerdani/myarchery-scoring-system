@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 // Import komponen lain yang terkait dengan Layout
 import Header from "./Header";
@@ -35,6 +36,11 @@ const EventLayout = (props) => {
       <Footer />
     </React.Fragment>
   );
+};
+
+EventLayout.propTypes = {
+  someCondition: PropTypes.bool,
+  children: PropTypes.node,
 };
 
 // Membungkus komponen dengan withRouter untuk mendapatkan akses ke props history

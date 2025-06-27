@@ -1,28 +1,20 @@
 // Impor library dan komponen yang diperlukan
 import * as React from "react";
+import PropTypes from "prop-types";
 import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { EventsService } from "services";
 import { useSelector } from "react-redux";
 import * as AuthStore from "store/slice/authentication";
 
-
 import { Helmet } from "react-helmet-async";
-import { Container } from "reactstrap";
-import { SpinnerDotBlock } from "components/ma";
+import { SpinnerDotBlock, ButtonOutlineBlue } from "components/ma";
 import CardMenu from "../components/CardMenu";
 import CardMenuWithButton from "../components/CardMenuWithButton";
 
-
 import IconCopy from "components/ma/icons/mono/copy";
-import IconInfo from "components/ma/icons/mono/info";
-import IconCheck from "components/ma/icons/fill/check";
-import { users } from "pages/dashboard/events/home/utils/icon-svgs";
-
-
+import { users, userPlus } from "./utils/icon-svgs";
 import { eventMenus } from "./utils/menus";
-import { target, fileText } from "./utils/icon-svgs";
-import { ButtonOutlineBlue } from "components/ma";
 
 /**
  * PageEventDetailHome: Komponen React untuk menampilkan detail sebuah event.
@@ -32,55 +24,16 @@ function PageEventDetailHome() {
   // Mengambil event_id dari parameter URL
   const { event_id } = useParams();
 
-  // Deklarasi state untuk detail event dan jadwal kualifikasi
+  // Deklarasi state untuk detail event
   const [eventDetail, setEventDetail] = React.useState(null);
-  const [isQualificationSchedulesSet, setIsQualificationSchedulesSet] = React.useState(false);
 
   // Mengakses profil pengguna dari Redux store
   const { userProfile } = useSelector(AuthStore.getAuthenticationStore);
 
-  // Menentukan apakah event telah dipublikasikan
-  const isEventPublished = Boolean(eventDetail?.publicInformation.eventStatus);
-
   // Mengambil peran pengguna
   const roles = userProfile.role.role.id;
 
-  /**
-   * renderManageEventMenuBadge: Membuat badge yang menunjukkan status publikasi event.
-   * Mengembalikan komponen badge berdasarkan apakah event dipublikasikan atau masih draft.
-   */
-  const renderManageEventMenuBadge = () => {
-    if (!isEventPublished) {
-      return (
-        <InfoGrayBadge>
-          <span className="icon-info">
-            <IconInfo size="20" />
-          </span>
-          <span>Draft</span>
-        </InfoGrayBadge>
-      );
-    }
-
-    return (
-      <PublishedBadge>
-        <IconCheck size="20" />
-        <span>Terpublikasi</span>
-      </PublishedBadge>
-    );
-  };
-
-  /**
-   * computeHrefScheduleMenu: Menghitung href untuk menu jadwal.
-   * Mengembalikan URL berdasarkan apakah jadwal kualifikasi telah diatur.
-   */
-  const computeHrefScheduleMenu = () => {
-    if (!isQualificationSchedulesSet) {
-      return `/dashboard/events/new/prepublish?eventId=${event_id}`;
-    }
-    return `/dashboard/event/${event_id}/scoring-qualification`;
-  };
-
-  // Hook effect untuk mengambil detail event dan jadwal kualifikasi
+  // Hook effect untuk mengambil detail event
   React.useEffect(() => {
     const getEventDetail = async () => {
       const result = await EventsService.getEventDetailById({ id: event_id });
@@ -89,16 +42,8 @@ function PageEventDetailHome() {
       }
     };
 
-    const getQualificationSchedules = async () => {
-      const result = await EventsService.getEventQualificationSchedules({ event_id });
-      if (result.success) {
-        setIsQualificationSchedulesSet(Boolean(result.data?.length));
-      }
-    };
-
     getEventDetail();
-    getQualificationSchedules();
-  }, []);
+  }, [event_id]);
 
   // Rendering komponen utama
   return (
@@ -111,7 +56,7 @@ function PageEventDetailHome() {
         )}
       </Helmet>
 
-      <Container fluid className="mt-4 mb-5">
+      <div className="container-fluid mt-4 mb-5">
         {eventDetail ? (
           <React.Fragment>
             <DashboardHeading className="mb-5">
@@ -151,83 +96,71 @@ function PageEventDetailHome() {
             </DashboardHeading>
 
             <MenuGridWrapper>
+              {/* 1. Acara */}
               <CardMenu
                 menu={eventMenus[1]}
                 href={eventMenus[1].computeLink(event_id)}
-                badge={renderManageEventMenuBadge()}
-                disabled={roles == 4 ? false : true}
+                disabled={roles !== 4}
               />
+              {/* 2. Pengaturan Acara gabungan */}
               <CardMenu
-                menu={eventMenus[8]}
+                menu={{
+                  icon: userPlus,
+                  title: "Pengaturan Acara",
+                  description: "Bantalan, Run Down, BIB, Dokumen (ID Card dan Sertifikat), FAQ",
+                }}
                 href={`/dashboard/event/${event_id}/budrests`}
-                disabled={roles == 4 ? false : true}
+                disabled={roles !== 4}
               />
-
+              {/* 3. Peserta Individu */}
               <CardMenuWithButton
                 eventDetail={eventDetail}
                 spanLabel={"Peserta Individu : " + eventDetail?.totalParticipantIndividual}
                 menu={eventMenus[2]}
                 href={`/dashboard/member/${event_id}?type=individual`}
-                disabled={roles == 4 ? false : true}
+                disabled={roles !== 4}
               />
-
+              {/* 4. Peserta Beregu */}
               <CardMenuWithButton
                 team={true}
                 eventDetail={eventDetail}
                 menu={eventMenus[3]}
                 spanLabel={"Peserta Beregu : " + eventDetail?.totalParticipantTeam}
                 href={`/dashboard/member/${event_id}?type=team`}
-                disabled={roles == 4 ? false : true}
+                disabled={roles !== 4}
               />
-
+              {/* 5. Pertandingan */}
+              <CardMenu
+                menu={eventMenus[4]}
+                href={eventMenus[4].computeLink(event_id)}
+                disabled={roles !== 4}
+              />
+              {/* 6. Dokumen */}
+              <CardMenu
+                menu={eventMenus[6]}
+                href={eventMenus[6].computeLink(event_id)}
+                disabled={roles !== 4}
+              />
+              {/* 7. Sertifikat (selalu tampil) */}
               <CardMenu
                 menu={{
-                  icon: target,
-                  title: "Pertandingan",
-                  description: "Input skor, hasil skor babak kualifikasi dan eliminasi",
-                }}
-                href={computeHrefScheduleMenu()}
-                disabled={!isQualificationSchedulesSet}
-                badge={
-                  !isQualificationSchedulesSet && (
-                    <InfoGrayBadge>
-                      <span className="icon-info">&#8505;</span>
-                      <span>Belum Diatur</span>
-                    </InfoGrayBadge>
-                  )
-                }
-              />
-
-              <CardMenu
-                menu={{
-                  icon: fileText,
-                  title: "Laporan",
-                  description: "Laporan jumlah peserta, laporan keuangan, laporan pertandingan",
-                }}
-                href={`/dashboard/event/${event_id}/reports`}
-                disabled={roles == 4 ? false : true}
-              />
-
-              <CardMenu
-                menu={{
-                  icon: fileText,
+                  icon: eventMenus[6].icon,
                   title: "Sertifikat",
                   description: "Master e-sertifikat",
                 }}
                 href={`/dashboard/certificate/new?event_id=${event_id}`}
-                disabled={roles == 4 ? false : true}
+                disabled={roles !== 4}
               />
-
-              {roles == 4 && (
-                <CardMenu
-                  menu={{
-                    icon: users,
-                    title: "Users",
-                    description: "Mengatur pengguna pengelola event",
-                  }}
-                  href={`/dashboard/manage-user/${event_id}`}
-                />
-              )}
+              {/* 8. Users */}
+              <CardMenu
+                menu={{
+                  icon: users,
+                  title: "Users",
+                  description: "Mengatur pengguna pengelola event",
+                }}
+                href={`/dashboard/manage-user/${event_id}`}
+                disabled={roles !== 4}
+              />
             </MenuGridWrapper>
           </React.Fragment>
         ) : (
@@ -235,7 +168,7 @@ function PageEventDetailHome() {
             <SpinnerDotBlock />
           </div>
         )}
-      </Container>
+      </div>
     </StyledPageWrapper>
   );
 }
@@ -276,29 +209,6 @@ const MenuGridWrapper = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 `;
 
-const InfoGrayBadge = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 2rem;
-  background-color: var(--ma-gray-100);
-  font-size: 12px;
-
-  .icon-info {
-    color: var(--ma-gray-400);
-  }
-`;
-
-const PublishedBadge = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 12px;
-`;
-
 function LandingPageLinkPlaceholder({ url = "" }) {
   return (
     <StyledLandingPageLink onClick={() => window.open(url, '_blank')}>
@@ -310,6 +220,9 @@ function LandingPageLinkPlaceholder({ url = "" }) {
   );
 }
 
+LandingPageLinkPlaceholder.propTypes = {
+  url: PropTypes.string,
+};
 
 const StyledLandingPageLink = styled.div`
   position: relative;

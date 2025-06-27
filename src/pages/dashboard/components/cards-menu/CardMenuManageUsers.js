@@ -103,7 +103,7 @@ function CardMenuManageUsers() {
     <CardMenuContainer>
       <CardBody>
         <div className="menu-icon mb-3">
-          <img className="menu-icon-img" src={users} />
+          <img className="menu-icon-img" src={users} alt="users icon" />
         </div>
 
         <h3>Users</h3>

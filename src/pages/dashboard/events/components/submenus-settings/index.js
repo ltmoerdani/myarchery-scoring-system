@@ -1,4 +1,5 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Container } from "reactstrap";
@@ -6,7 +7,6 @@ import { NavLink } from "react-router-dom";
 
 import IconHome from "components/ma/icons/mono/home";
 import IconBudRest from "components/ma/icons/mono/bud-rest";
-// import IconUser from "components/ma/icons/mono/user";
 import IconCard from "components/ma/icons/mono/card";
 import IconUser from "components/ma/icons/mono/user";
 
@@ -56,6 +56,13 @@ function SubNavbar({ eventId }) {
     </StyledSubNavbar>
   );
 }
+
+SubNavbar.propTypes = {
+  eventId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number
+  ]).isRequired,
+};
 
 const StyledSubNavbar = styled.div`
   background-color: var(--ma-blue);

@@ -16,8 +16,6 @@ import PageEventScoringElimination from "pages/dashboard/events/scoring-eliminat
 import PageEventSelectionResult from "pages/dashboard/events/selection-result";
 import PageEventReports from "pages/dashboard/events/reports";
 import PageEventDoc from "pages/dashboard/events/doc";
-import PageEventDetailSchedulingScoring from "pages/dashboard/events/scheduling-scoring";
-import PageConfigEliminationDetail from "pages/dashboard/events/scheduling-scoring/views/manage-elimination-detail";
 import ListCategory from "../pages/dashboard/category";
 import ListEvent from "../pages/dashboard/events";
 import EventsNew from "../pages/dashboard/events/new";
