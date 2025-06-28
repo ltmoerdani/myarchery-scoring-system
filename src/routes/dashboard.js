@@ -26,7 +26,6 @@ import Bagan from "pages/dashboard/results/bagan";
 import EditResult from "pages/dashboard/results/edit";
 import ListSchedule from "../pages/dashboard/schedule";
 import Eliminasi from "../pages/dashboard/eliminasi";
-import PageEventOfficial from "pages/dashboard/events/official";
 import Legacy_PageEventIdCard from "pages/dashboard/events/id-card/_legacy";
 import PageEventIdCard from "pages/dashboard/events/id-card";
 import AllEvent from "pages/dashboard/events/list";
@@ -43,7 +42,6 @@ const dashboardRoutes = [
   { path: "/dashboard/event/:event_id/budrests/detail", component: PageEventBudRestDetail },
   { path: "/dashboard/event/id-card/:event_id", component: Legacy_PageEventIdCard },
   { path: "/dashboard/event/:event_id/id-card", component: PageEventIdCard },
-  { path: "/dashboard/event/:event_id/official", component: PageEventOfficial },
   { path: "/dashboard/event", component: AllEvent },
   {
     path: "/dashboard/event/:event_id/scoring-qualification",

@@ -28,7 +28,7 @@ const eventMenus = {
     icon: target,
     title: "Pertandingan",
     description: "Pengaturan scoring, hasil score babak kualifikasi, dan eliminasi",
-    computeLink: () => "",
+    computeLink: (eventId) => `/dashboard/event/${eventId}/scoring-qualification`,
   },
   5: {
     id: 5,

@@ -11,7 +11,6 @@ export { default as CertificateService } from "./certificate";
 export { default as ScoringService } from "./scoring";
 export { default as BudRestService } from "./bud-rest";
 export { default as EventQualificationService } from "./event-qualification";
-export { default as OfficialService } from "./official";
 export { default as IdCardService } from "./id-card";
 export { default as DosService } from "./dos";
 export { default as ParticipantService } from "./participant";

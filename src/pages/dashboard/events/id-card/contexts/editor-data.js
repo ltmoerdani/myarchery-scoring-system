@@ -247,7 +247,13 @@ function useEditorData(event_id) {
 
   const setPaperSize = (value) => dispatch({ paperSize: value });
 
-  const getPaperDimensions = () => dimensions[data.paperSize][data.paperOrientation];
+  const getPaperDimensions = () => {
+    if (!data || !data.paperSize || !data.paperOrientation) {
+      // Return default dimensions for A5 portrait if data is not available
+      return dimensions[A5][OR_PORTRAIT];
+    }
+    return dimensions[data.paperSize][data.paperOrientation];
+  };
 
   const getBgImage = () => data?.backgroundPreviewUrl || data?.backgroundUrl;
 
@@ -334,7 +340,16 @@ function useEditorData(event_id) {
 
 function editorReducer(state, action) {
   if (action.type === "INIT") {
-    return action.payload;
+    if (!action.payload) {
+      return defaultEditorData;
+    }
+    return {
+      ...defaultEditorData,
+      ...action.payload,
+      paperSize: action.payload.paperSize || defaultEditorData.paperSize,
+      paperOrientation: action.payload.paperOrientation || defaultEditorData.paperOrientation,
+      fields: action.payload.fields || defaultEditorData.fields,
+    };
   }
 
   if (action.type === "CHANGE_BG_IMAGE") {
@@ -462,10 +477,15 @@ function useIdCard(eventId) {
     };
     fetcher.runAsync(getFunction, {
       transform(data) {
-        if (!data) {
+        if (!data || !data.editorData) {
           return data;
         }
-        return { ...data, editorData: JSON.parse(data.editorData) };
+        try {
+          return { ...data, editorData: JSON.parse(data.editorData) };
+        } catch (error) {
+          console.error("Failed to parse editor data:", error);
+          return data;
+        }
       },
     });
   };
@@ -495,53 +515,72 @@ function useSubmitIdCard() {
 // utils
 
 function _buildEditorData(idCard, eventId) {
-  if (!idCard?.editorData) {
-    return {
-      key: stringUtil.createRandom(),
-      event_id: eventId,
-      ...defaultEditorData,
-    };
-  }
-  return {
-    key: stringUtil.createRandom(),
+  const key = stringUtil.createRandom();
+  const defaultData = {
+    key,
     event_id: eventId,
-    ...idCard.editorData,
-    // Tarik data background ke editor data
-    backgroundUrl: idCard.background,
+    ...defaultEditorData,
   };
+
+  if (!idCard?.editorData) {
+    return defaultData;
+  }
+
+  try {
+    return {
+      ...defaultData,
+      ...idCard.editorData,
+      // Ensure required properties are always present
+      paperSize: idCard.editorData.paperSize || defaultEditorData.paperSize,
+      paperOrientation: idCard.editorData.paperOrientation || defaultEditorData.paperOrientation,
+      fields: idCard.editorData.fields || defaultEditorData.fields,
+      // Tarik data background ke editor data
+      backgroundUrl: idCard.background,
+    };
+  } catch (error) {
+    console.error("Error building editor data:", error);
+    return defaultData;
+  }
 }
 
 async function _prepareSaveData(editorFormData, config = {}) {
-  const editorData = {
-    event_id: editorFormData.event_id,
-    paperSize: editorFormData.paperSize,
-    paperOrientation: editorFormData.paperOrientation,
-    backgroundUrl: editorFormData.backgroundUrl,
-    backgroundFileRaw: editorFormData.backgroundFileRaw,
-    backgroundPreviewUrl: editorFormData.backgroundPreviewUrl,
-    fields: _buildFields(editorFormData.fields),
-  };
+  try {
+    const editorData = {
+      event_id: editorFormData.event_id,
+      paperSize: editorFormData.paperSize,
+      paperOrientation: editorFormData.paperOrientation,
+      backgroundUrl: editorFormData.backgroundUrl,
+      backgroundFileRaw: editorFormData.backgroundFileRaw,
+      backgroundPreviewUrl: editorFormData.backgroundPreviewUrl,
+      fields: _buildFields(editorFormData.fields),
+    };
 
-  const imageBase64ForUpload = editorFormData.backgroundFileRaw
-    ? await convertBase64(editorFormData.backgroundFileRaw)
-    : undefined;
+    const imageBase64ForUpload = editorFormData.backgroundFileRaw
+      ? await convertBase64(editorFormData.backgroundFileRaw)
+      : undefined;
 
-  const idCardHtmlTemplate = renderTemplateString(editorData, config);
-  const templateInBase64 = btoa(idCardHtmlTemplate);
+    const idCardHtmlTemplate = renderTemplateString(editorData, config);
+    const templateInBase64 = btoa(idCardHtmlTemplate);
 
-  const payload = {
-    event_id: parseInt(editorFormData.event_id),
-    html_template: templateInBase64,
-    background_url: imageBase64ForUpload,
-    editor_data: JSON.stringify({
+    const editorDataToSave = {
       ...editorData,
       backgroundUrl: undefined,
       backgroundFileRaw: undefined,
       backgroundPreviewUrl: undefined,
-    }),
-  };
+    };
 
-  return payload;
+    const payload = {
+      event_id: parseInt(editorFormData.event_id),
+      html_template: templateInBase64,
+      background_url: imageBase64ForUpload,
+      editor_data: JSON.stringify(editorDataToSave),
+    };
+
+    return payload;
+  } catch (error) {
+    console.error("Failed to prepare save data:", error);
+    throw new Error("Failed to prepare ID card data for saving");
+  }
 }
 
 function _buildFields(fields) {
