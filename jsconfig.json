@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["apps/client/src/*"]
+    }
   },
-  "include": ["src"],
+  "include": ["apps/client/src"],
   "checkjs": true
 }

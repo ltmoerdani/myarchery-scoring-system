@@ -2,6 +2,10 @@
   "name": "my-archery",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@fullcalendar/bootstrap": "^5.5.0",

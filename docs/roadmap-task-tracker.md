@@ -16,11 +16,11 @@ _Dokumen ini digunakan untuk memantau progress migrasi dan implementasi arsitekt
 
 | Task                                | Status | PIC | Expected Result                                   | Catatan |
 |------------------------------------- |--------|-----|--------------------------------------------------|---------|
-| Setup Turborepo                     | [ ]    |     | Struktur monorepo terbentuk, turbo.json & workspace siap |         |
-| Migrasi FE ke `apps/client/`        | [ ]    |     | Semua kode FE berjalan di folder baru, tidak ada error import |         |
-| Setup struktur folder monorepo      | [ ]    |     | Struktur folder sesuai standar, siap untuk pengembangan BE & shared |         |
-| Update konfigurasi build            | [ ]    |     | Build FE sukses di monorepo, output di folder yang benar |         |
-| Update dokumentasi struktur         | [ ]    |     | Dokumentasi struktur baru tersedia & mudah dipahami |         |
+| Setup Turborepo                     | [x]    |     | Struktur monorepo terbentuk, turbo.json & workspace siap |         |
+| Migrasi FE ke `apps/client/`        | [x]    |     | Semua kode FE berjalan di folder baru, tidak ada error import |         |
+| Setup struktur folder monorepo      | [x]    |     | Struktur folder sesuai standar, siap untuk pengembangan BE & shared |         |
+| Update konfigurasi build            | [x]    |     | Build FE sukses di monorepo, output di folder yang benar |         |
+| Update dokumentasi struktur         | [x]    |     | Dokumentasi struktur baru tersedia & mudah dipahami |         |
 
 **Sub-task:**
 - Setup Turborepo: Inisialisasi monorepo dengan Turborepo (`pnpm create turbo@latest ...`)

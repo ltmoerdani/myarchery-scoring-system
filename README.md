@@ -1,3 +1,37 @@
+# MyArchery Scoring System - Monorepo
+
+Ini adalah monorepo untuk sistem scoring panahan berbasis arsitektur modern (Fastify, uWebSockets.js, Redis, Pusher, React).
+
+## Struktur Monorepo (Turborepo)
+
+```
+archery-app/
+├── apps/
+│   ├── client/       # React (FE)
+│   └── server/       # Fastify + uWS (BE)
+├── packages/
+│   ├── shared/       # TypeScript types, DTO, validator
+│   └── database/     # Redis, Prisma client
+├── turbo.json        # Turborepo pipeline
+```
+
+- Semua kode frontend di `apps/client/`
+- Backend di `apps/server/`
+- Shared types di `packages/shared/`
+
+## Build & Develop
+
+```bash
+pnpm install
+pnpm dev # via Turborepo
+```
+
+## Referensi Arsitektur
+
+Lihat `docs/new-architecture.md` dan `docs/guidance-be.md` untuk detail best practice dan aturan pengembangan.
+
+---
+
 # MyArchery Scoring System - Web Admin
 
 Ini adalah dasbor admin web untuk MyArchery, sebuah platform yang dirancang untuk mengelola acara panahan, peserta, dan sistem penilaian. Aplikasi ini dibangun menggunakan React dan dilengkapi dengan berbagai fitur untuk menyederhanakan manajemen acara dari awal hingga akhir.
@@ -100,4 +134,4 @@ Dalam direktori proyek, Anda dapat menjalankan:
 
 ---
 
-Selamat bekerja dengan proyek MyArchery! Jika Anda memiliki pertanyaan, jangan ragu untuk bertanya. 
+Selamat bekerja dengan proyek MyArchery! Jika Anda memiliki pertanyaan, jangan ragu untuk bertanya.
