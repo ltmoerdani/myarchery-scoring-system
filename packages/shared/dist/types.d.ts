@@ -1,3 +1,5 @@
+export * from './events/scoring';
+export * from './events/user';
 export interface ScoringEvent {
     athleteId: string;
     score: number;

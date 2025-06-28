@@ -1,3 +1,7 @@
+// Deprecated: use explicit imports from events/* and validation/*
+export * from './events/scoring';
+export * from './events/user';
+
 // Shared types for FE-BE contract
 
 export interface ScoringEvent {

@@ -35,10 +35,10 @@ _Dokumen ini digunakan untuk memantau progress migrasi dan implementasi arsitekt
 
 | Task                           | Status | PIC | Expected Result                                   | Catatan |
 |--------------------------------|--------|-----|--------------------------------------------------|---------|
-| Buat package `packages/shared/`| [ ]    |     | Folder `packages/shared/` siap, bisa diimport FE & BE |         |
-| Definisikan DTO & types utama  | [ ]    |     | Semua kontrak data utama terdokumentasi & reusable |         |
-| Integrasi shared types ke FE   | [ ]    |     | FE hanya konsumsi types dari shared, tidak ada duplikasi |         |
-| Integrasi shared types ke BE   | [ ]    |     | BE validasi & response pakai shared types         |         |
+| Buat package `packages/shared/`| [x]    |     | Folder `packages/shared/` siap, bisa diimport FE & BE |         |
+| Definisikan DTO & types utama  | [x]    |     | Semua kontrak data utama terdokumentasi & reusable |         |
+| Integrasi shared types ke FE   | [x]    |     | FE hanya konsumsi types dari shared, tidak ada duplikasi |         |
+| Integrasi shared types ke BE   | [x]    |     | BE validasi & response pakai shared types         |         |
 
 **Sub-task:**
 - Inisialisasi package TypeScript shared, setup tsconfig & package.json

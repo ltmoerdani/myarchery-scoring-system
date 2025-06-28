@@ -1,0 +1,7 @@
+// Type untuk user
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'athlete' | 'official' | 'admin';
+};
