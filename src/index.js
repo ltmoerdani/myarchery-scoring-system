@@ -1,5 +1,5 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 import { BrowserRouter } from "react-router-dom"
 import { persistStore } from "redux-persist"
@@ -12,19 +12,18 @@ import { store } from "./store"
 
 let persistor = persistStore(store)
 
-ReactDOM.render(
+const container = document.getElementById("root")
+const root = createRoot(container)
+root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <React.Fragment>
-        <HelmetProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </HelmetProvider>
-      </React.Fragment>
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>
     </PersistGate>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 )
 
 serviceWorker.unregister()

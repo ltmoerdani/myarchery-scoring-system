@@ -45,9 +45,18 @@ const Login = () => {
     }),
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const { data } = await AuthenticationService.login(values)
-        dispatch(loginAction(data))
-        history.push("/dashboard")
+        const response = await AuthenticationService.login(values)
+        const { data } = response
+        // Adaptasi struktur response agar accessToken selalu ada di user
+        if (data && data.accessToken) {
+          dispatch(loginAction(data))
+          history.push("/dashboard")
+        } else if (data && data.token) {
+          dispatch(loginAction({ ...data.user, accessToken: data.token }))
+          history.push("/dashboard")
+        } else {
+          toast.error("Login gagal: token tidak ditemukan")
+        }
       } catch (error) {
         toast.error(error.response?.data?.message || "Login failed")
       } finally {
