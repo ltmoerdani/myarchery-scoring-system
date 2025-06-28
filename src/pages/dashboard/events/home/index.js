@@ -26,6 +26,8 @@ function PageEventDetailHome() {
 
   // Deklarasi state untuk detail event
   const [eventDetail, setEventDetail] = React.useState(null);
+  // Tambahkan state error
+  const [error, setError] = React.useState(null);
 
   // Mengakses profil pengguna dari Redux store
   const { userProfile } = useSelector(AuthStore.getAuthenticationStore);
@@ -35,13 +37,27 @@ function PageEventDetailHome() {
 
   // Hook effect untuk mengambil detail event
   React.useEffect(() => {
+    // Debug log event_id
+    console.log("event_id param:", event_id);
+    if (!event_id || isNaN(Number(event_id))) {
+      setError("Parameter event_id tidak valid. Silakan cek URL Anda.");
+      return;
+    }
     const getEventDetail = async () => {
-      const result = await EventsService.getEventDetailById({ id: event_id });
-      if (result.success) {
-        setEventDetail(result.data);
+      try {
+        const result = await EventsService.getEventDetailById({ id: Number(event_id) });
+        console.log("API result:", result);
+        if (result.success) {
+          setEventDetail(result.data);
+          setError(null);
+        } else {
+          setError("Gagal mengambil data event. Event mungkin tidak ditemukan atau terjadi masalah pada server.");
+        }
+      } catch (err) {
+        console.error("API error:", err);
+        setError("Terjadi kesalahan saat mengambil data event. Silakan coba lagi nanti.");
       }
     };
-
     getEventDetail();
   }, [event_id]);
 
@@ -57,7 +73,15 @@ function PageEventDetailHome() {
       </Helmet>
 
       <div className="container-fluid mt-4 mb-5">
-        {eventDetail ? (
+        {error ? (
+          <div style={{ color: "red", padding: 24, textAlign: "center" }}>
+            <h3>Terjadi Kesalahan</h3>
+            <p>{error}</p>
+            <ButtonOutlineBlue as={Link} to="/dashboard">
+              Kembali ke Dashboard
+            </ButtonOutlineBlue>
+          </div>
+        ) : eventDetail ? (
           <React.Fragment>
             <DashboardHeading className="mb-5">
               <HeaderMain>
